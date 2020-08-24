@@ -16,6 +16,7 @@ class LocationWeatherViewModel {
     private let weatherProvider: WeatherAPIClient
     private let weatherIconProvider: WeatherIconProvider
     private let dataLoadingErrorRelay = BehaviorRelay<String?>(value: nil)
+    private let dateManager: ForecastDateManager
     private lazy var temperatureRelay: BehaviorRelay<String?> = {
         return BehaviorRelay(value: createTemperatureDescription())
     }()
@@ -39,11 +40,16 @@ class LocationWeatherViewModel {
         return weatherIconRelay.compactMap { $0 }
     }()
     
-    var collectionData: [WeatherDataSection] = []
-    init(location: LocationWeatherData, weatherProvider: WeatherAPIClient, weatherIconProvider: WeatherIconProvider) {
+    var cellsData: [Section: [AnyCellViewModel]] = [
+        .basicData: [HourlyForecastCellViewModel](),
+        .hourlyForecast: [HourlyForecastCellViewModel](),
+        .dailyForecast: [HourlyForecastCellViewModel]()
+    ]
+    init(location: LocationWeatherData, weatherProvider: WeatherAPIClient, weatherIconProvider: WeatherIconProvider, dateManager: ForecastDateManager) {
         self.location = location
         self.weatherProvider = weatherProvider
         self.weatherIconProvider = weatherIconProvider
+        self.dateManager = dateManager
         loadWeatherIcon()
         loadWeatherIfNeeded(for: location)
         loadWeatherDetails()
@@ -97,6 +103,27 @@ class LocationWeatherViewModel {
     }
     
     private func loadWeatherDetails() {
+        weatherProvider.loadForecast(latitude: location.cityCoordinates.latitude, longitude: location.cityCoordinates.longitude) { [weak self] result in
+            guard let `self` = self else { return }
+            switch result {
+            case .success(let forecasts):
+                print("x")
+                var todayForecasts = [WeatherForecast]()
+                var nextDaysForecasts = [WeatherForecast]()
+                for forecast in forecasts {
+                    self.dateManager.isToday(utc: forecast.dateISO) ? todayForecasts.append(forecast) : nextDaysForecasts.append(forecast)
+                }
+            case .failure(_):
+                self.dataLoadingErrorRelay.accept("Problem with loading forecast for future days")
+            }
+        }
+    }
+    
+    func updateTodayDetails(with forecasts: [WeatherForecast]) {
+//        let cellModels =
+        for forecast in forecasts {
+            
+        }
         
     }
     
@@ -107,23 +134,57 @@ class LocationWeatherViewModel {
     }
 }
 
-protocol WeatherDataCellViewModel {
-    func dequeue(collectionView: UICollectionView) -> UICollectionViewCell
+protocol AnyCellType: UICollectionViewCell {
+    static var cellIdentifier: String { get }
+    func setup(with model: AnyCellViewModel)
+}
+extension AnyCellType {
+    static var cellIdentifier: String {
+        return String(describing: Self.self)
+    }
 }
 
-enum WeatherDataSection {
-    case basicData(rows: [WeatherDataCellViewModel])
-    case hourlyForecast(rows: [WeatherDataCellViewModel])
-    case dailyForecast(rows: [WeatherDataCellViewModel])
+
+protocol AnyCellViewModel {
+    func dequeue(collectionView: UICollectionView, for indexPath: IndexPath) -> AnyCellType
+}
+
+enum Section: Int {
+    case basicData = 0
+    case hourlyForecast
+    case dailyForecast
+}
+
+class ForecastDateManager {
+    let UTCformatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-mm-dd HH:mm:ss"
+        formatter.timeZone = TimeZone(abbreviation: "UTC")
+        return formatter
+    }()
     
-    var rows: [WeatherDataCellViewModel] {
-        switch self {
-        case .basicData(let rows):
-            return rows
-        case .hourlyForecast(let rows):
-            return rows
-        case .dailyForecast(let rows):
-            return rows
-        }
+    let currentTimeFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.timeZone = TimeZone.current
+        formatter.dateFormat = "h a"
+        return formatter
+    }()
+    
+    let calendar = Calendar.current
+    
+    func isToday(utc: String) -> Bool {
+        guard let current = utcToLocal(utc: utc) else { return false }
+        return calendar.isDateInToday(current)
+    }
+    
+    func dayOfWeek(utc: String) -> String? {
+        guard let currentDate = utcToLocal(utc: utc) else { return nil }
+        return calendar.weekdaySymbols[calendar.component(.weekday, from: currentDate)]
+    }
+    
+    private func utcToLocal(utc: String) -> Date? {
+        guard let utc = UTCformatter.date(from: utc) else { return nil }
+        let local = currentTimeFormatter.string(from: utc)
+        return currentTimeFormatter.date(from: local)
     }
 }

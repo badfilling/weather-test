@@ -115,14 +115,23 @@ class LocationWeatherViewController: UIViewController {
 
 extension LocationWeatherViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return viewModel.collectionData.count
+        return viewModel.cellsData.keys.count
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.collectionData[section].rows.count
+        guard let section = Section(rawValue: section) else { return 0}
+        return viewModel.cellsData[section]?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        return viewModel.collectionData[indexPath.section].rows[indexPath.row].dequeue(collectionView: collectionView)
+        guard let section = Section(rawValue: indexPath.section),
+            let sectionData = viewModel.cellsData[section] else {
+                return UICollectionViewCell()
+        }
+        let cellViewModel = sectionData[indexPath.row]
+        let cell = cellViewModel.dequeue(collectionView: collectionView, for: indexPath)
+        cell.setup(with: cellViewModel)
+        return cell
+//        return sectionData[indexPath.row].dequeue(collectionView: collectionView)
     }
     
     
