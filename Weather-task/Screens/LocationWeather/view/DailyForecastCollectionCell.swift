@@ -1,15 +1,17 @@
 //
-//  HourlyForecastCollectionCell.swift
+//  DailyForecastCollectionCell.swift
 //  Weather-task
 //
 //  Created by Artur Stepaniuk on 24/08/2020.
 //  Copyright © 2020 Artur Stepaniuk. All rights reserved.
 //
 
+import Foundation
+
 import UIKit
 import SnapKit
 
-class HourlyForecastCollectionCell: UICollectionViewCell, AnyCollectionCell {
+class DailyForecastCollectionCell: UICollectionViewCell, AnyCollectionCell {
     let timeLabel: UILabel = {
         let label = UILabel()
         label.font = .preferredFont(forTextStyle: .subheadline)
@@ -22,7 +24,13 @@ class HourlyForecastCollectionCell: UICollectionViewCell, AnyCollectionCell {
         return view
     }()
     
-    let temperatureLabel: UILabel = {
+    let minTemperatureLabel: UILabel = {
+        let label = UILabel()
+        label.font = .preferredFont(forTextStyle: .subheadline)
+        return label
+    }()
+    
+    let maxTemperatureLabel: UILabel = {
         let label = UILabel()
         label.font = .preferredFont(forTextStyle: .subheadline)
         return label
@@ -62,19 +70,26 @@ class HourlyForecastCollectionCell: UICollectionViewCell, AnyCollectionCell {
             make.top.greaterThanOrEqualToSuperview()
             make.bottom.lessThanOrEqualToSuperview()
             make.leading.equalTo(timeLabel.snp.trailing).offset(24)
+            make.centerY.equalToSuperview()
         }
         
-        contentView.addSubview(temperatureLabel)
-        temperatureLabel.snp.makeConstraints { make in
+        let temperatureStack = UIStackView()
+        temperatureStack.axis = .vertical
+        temperatureStack.distribution = .fillEqually
+        temperatureStack.addArrangedSubview(maxTemperatureLabel)
+        temperatureStack.addArrangedSubview(minTemperatureLabel)
+        contentView.addSubview(temperatureStack)
+        temperatureStack.snp.makeConstraints { make in
+            make.top.bottom.equalToSuperview()
             make.trailing.equalToSuperview().offset(-32)
-            make.centerY.equalToSuperview()
         }
     }
     
     func setup(with model: AnyCollectionCellViewModel) {
-        guard let model = model as? HourlyForecastCellViewModel else { return }
+        guard let model = model as? DailyForecastCellViewModel else { return }
         timeLabel.text = model.dateDescription
-        temperatureLabel.text = model.temperatureDescription
+        minTemperatureLabel.text = model.minTemperatureDescription
+        maxTemperatureLabel.text = model.maxTemperatureDescription
         onReuse = model.setImage(for: weatherIcon)
     }
 }

@@ -1,5 +1,5 @@
 //
-//  HourlyForecastCellViewModel.swift
+//  DailyForecastCellViewModel.swift
 //  Weather-task
 //
 //  Created by Artur Stepaniuk on 24/08/2020.
@@ -8,16 +8,18 @@
 
 import UIKit
 
-class HourlyForecastCellViewModel: AnyCollectionCellViewModel {
+class DailyForecastCellViewModel: AnyCollectionCellViewModel {
     
-    let temperatureDescription: String
+    let minTemperatureDescription: String
+    let maxTemperatureDescription: String
     let dateDescription: String
     
     private let imageLoader: WeatherIconProvider
     private let weatherIconName: String?
     
-    init(temperatureDescription: String, dateDescription: String, imageLoader: WeatherIconProvider, weatherIconName: String?) {
-        self.temperatureDescription = temperatureDescription
+    init(minTemperatureDescription: String, maxTemperatureDescription: String, dateDescription: String, imageLoader: WeatherIconProvider, weatherIconName: String?) {
+        self.minTemperatureDescription = minTemperatureDescription
+        self.maxTemperatureDescription = maxTemperatureDescription
         self.dateDescription = dateDescription
         self.imageLoader = imageLoader
         self.weatherIconName = weatherIconName
@@ -38,6 +40,6 @@ class HourlyForecastCellViewModel: AnyCollectionCellViewModel {
     }
     
     func dequeue(collectionView: UICollectionView, for indexPath: IndexPath) -> AnyCollectionCell {
-        return collectionView.dequeueReusableCell(withReuseIdentifier: HourlyForecastCollectionCell.cellIdentifier, for: indexPath) as! HourlyForecastCollectionCell
+        return collectionView.dequeueReusableCell(withReuseIdentifier: DailyForecastCollectionCell.cellIdentifier, for: indexPath) as! DailyForecastCollectionCell
     }
 }
