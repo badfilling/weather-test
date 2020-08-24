@@ -47,6 +47,7 @@ class RecentLocationsViewController: UIViewController {
     
     func setupViews() {
         locationsTable.dataSource = self
+        locationsTable.delegate = self
         view.backgroundColor = .white
         view.addSubview(locationsTable)
         locationsTable.snp.makeConstraints { make in
@@ -86,9 +87,9 @@ class RecentLocationsViewController: UIViewController {
     
     func setupNavigationBar() {
         title = "Choose a city"
+        navigationController?.navigationBar.prefersLargeTitles = true
         let addLocationButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addLocationClicked))
         navigationItem.leftBarButtonItem = addLocationButton
-        
     }
     
     @objc func addLocationClicked() {
@@ -100,7 +101,7 @@ class RecentLocationsViewController: UIViewController {
     }
 }
 
-extension RecentLocationsViewController: UITableViewDataSource {
+extension RecentLocationsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.locationModels.count
     }
@@ -111,6 +112,12 @@ extension RecentLocationsViewController: UITableViewDataSource {
         cell.setup(with: model)
         print("dequeue is called")
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let detailsVM = LocationWeatherViewModel(location: viewModel.locationModels[indexPath.row], weatherProvider: viewModel.weatherProvider, weatherIconProvider: viewModel.iconProvider)
+        let detailsVC = LocationWeatherViewController(viewModel: detailsVM)
+        show(detailsVC, sender: self)
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
