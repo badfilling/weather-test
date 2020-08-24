@@ -17,4 +17,5 @@ enum NetworkError: Error {
 protocol WeatherAPIClient {
     @discardableResult
     func loadCurrentWeather(latitude: Double, longitude: Double, completion: @escaping (Result<CurrentWeather, Error>) -> Void) -> URLSessionDataTask?
+    func loadForecast(latitude: Double, longitude: Double, completion: @escaping (Result<[WeatherForecast], Error>) -> Void) -> URLSessionDataTask?
 }

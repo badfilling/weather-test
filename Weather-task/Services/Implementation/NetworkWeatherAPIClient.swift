@@ -9,25 +9,32 @@
 import Foundation
 
 class NetworkWeatherAPIClient: WeatherAPIClient {
-    private let basicURL = "http://api.openweathermap.org/data/2.5/weather"
+    enum Endpoint: String {
+        case currentWeather = "weather"
+        case forecast = "forecast"
+    }
+    private let basicURL = "http://api.openweathermap.org/data/2.5/"
     private let apiKey = "0f4ccd5a0002cfb986940c83d13eb325"
     
     let session = URLSession.shared
     
     @discardableResult
-    func loadCurrentWeather(latitude: Double, longitude: Double, completion: @escaping (Result<CurrentWeather, Error>) -> Void) -> URLSessionDataTask? {
+    func loadForecast(latitude: Double, longitude: Double, completion: @escaping (Result<[WeatherForecast], Error>) -> Void) -> URLSessionDataTask? {
         do {
             let url = try prepareURL(queryParams: [
                 "lat": "\(latitude)",
-                "lon": "\(longitude)"])
-            return performRequest(for: url) { (result: Result<CurrentWeatherDTO, Error>) in
+                "lon": "\(longitude)"], endpoint: .forecast)
+            return performRequest(for: url) { (result: Result<DetailForecastDTO, Error>) in
                 switch result {
                 case .success(let dto):
                     do {
-                        let weather = try dto.convert()
-                        completion(.success(weather))
+                        var forecasts = [WeatherForecast]()
+                        for forecastDTO in dto.list ?? [] {
+                            forecasts.append(try forecastDTO.convert())
+                        }
+                        completion(.success(forecasts))
                     } catch {
-                        completion(.failure(NetworkError.dataCorrupted))
+                        completion(.failure(error))
                     }
                 case .failure(let error):
                     completion(.failure(error))
@@ -39,9 +46,34 @@ class NetworkWeatherAPIClient: WeatherAPIClient {
         return nil
     }
     
-    private func prepareURL(queryParams: [String: String]) throws -> URL {
+    @discardableResult
+    func loadCurrentWeather(latitude: Double, longitude: Double, completion: @escaping (Result<CurrentWeather, Error>) -> Void) -> URLSessionDataTask? {
+        do {
+            let url = try prepareURL(queryParams: [
+                "lat": "\(latitude)",
+                "lon": "\(longitude)"], endpoint: .currentWeather)
+            return performRequest(for: url) { (result: Result<CurrentWeatherDTO, Error>) in
+                switch result {
+                case .success(let dto):
+                    do {
+                        let weather = try dto.convert()
+                        completion(.success(weather))
+                    } catch {
+                        completion(.failure(error))
+                    }
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
+        } catch {
+            completion(.failure(NetworkError.serverAccessProblem))
+        }
+        return nil
+    }
+    
+    private func prepareURL(queryParams: [String: String], endpoint: Endpoint) throws -> URL {
         func basicURLComponent() -> URLComponents? {
-            return URLComponents(string: basicURL)
+            return URLComponents(string: basicURL + endpoint.rawValue)
         }
         
         func basicQueryItems() -> [URLQueryItem] {
