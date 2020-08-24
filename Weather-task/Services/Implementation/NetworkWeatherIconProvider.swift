@@ -13,11 +13,7 @@ class NetworkWeatherIconProvider: WeatherIconProvider {
     private let cache = NSCache<NSString, NSData>()
     private let basicURL = "http://openweathermap.org/img/wn/"
     private let session = URLSession.shared
-    private let scale: Int
-    
-    init(scale: Int) {
-        self.scale = scale
-    }
+    private let scale: Int = 2
     
     func setImage(for iconName: String, completion: @escaping (Data?) -> Void) -> CancelLoadingHandler? {
         if let cached = cache.object(forKey: iconName as NSString) {
