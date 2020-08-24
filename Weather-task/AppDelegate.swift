@@ -20,7 +20,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow()
         
         let recentCitiesProvider = UserDefaultsRecentlyViewedCitiesProvider()
-        let weatherProvider = NetworkWeatherAPIClient()
+//        let weatherProvider = NetworkWeatherAPIClient()
+        let weatherProvider = FakeWeatherAPIClient()
         let iconProvider = NetworkWeatherIconProvider(scale: Int(UIScreen.main.scale))
         let citiesVM = RecentLocationsViewModel(recentCitiesProvider: recentCitiesProvider, weatherProvider: weatherProvider, iconProvider: iconProvider)
         let cityProvider = FileCityProvider()

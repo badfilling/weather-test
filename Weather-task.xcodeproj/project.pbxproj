@@ -43,6 +43,7 @@
 		DF56067D24F4071D001CA1FB /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF56067C24F4071D001CA1FB /* Date+Extensions.swift */; };
 		DF56067F24F40726001CA1FB /* URLSession+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF56067E24F40726001CA1FB /* URLSession+Extensions.swift */; };
 		DF56068124F40733001CA1FB /* UITableViewCell+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF56068024F40732001CA1FB /* UITableViewCell+Extensions.swift */; };
+		DF9CFCAA24F40E5C0004C6FA /* FakeWeatherAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9CFCA924F40E5C0004C6FA /* FakeWeatherAPIClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,6 +97,7 @@
 		DF56067C24F4071D001CA1FB /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		DF56067E24F40726001CA1FB /* URLSession+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+Extensions.swift"; sourceTree = "<group>"; };
 		DF56068024F40732001CA1FB /* UITableViewCell+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+Extensions.swift"; sourceTree = "<group>"; };
+		DF9CFCA924F40E5C0004C6FA /* FakeWeatherAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeWeatherAPIClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -237,6 +239,7 @@
 				DF56065924F2B15B001CA1FB /* UserDefaultsRecentlyViewedCitiesProvider.swift */,
 				DF56066F24F2E7DE001CA1FB /* NetworkWeatherAPIClient.swift */,
 				DF56067524F3E9F2001CA1FB /* NetworkWeatherIconProvider.swift */,
+				DF9CFCA924F40E5C0004C6FA /* FakeWeatherAPIClient.swift */,
 			);
 			path = Implementation;
 			sourceTree = "<group>";
@@ -492,6 +495,7 @@
 				DF56066C24F2DF02001CA1FB /* CurrentWeatherDTO.swift in Sources */,
 				DF2D573D24F16FB900C4CFC3 /* CityDataSource.swift in Sources */,
 				DF294DCD24F02800008200C2 /* SelectLocationViewModel.swift in Sources */,
+				DF9CFCAA24F40E5C0004C6FA /* FakeWeatherAPIClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
