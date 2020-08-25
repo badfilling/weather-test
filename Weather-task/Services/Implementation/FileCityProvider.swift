@@ -13,6 +13,13 @@ class FileCityProvider: CityProvider {
     private var loadingError: Error?
     private var loadingDispatchTask: DispatchWorkItem?
     private let providerDispatchQueue = DispatchQueue(label: "fileCityProvider", qos: .utility)
+    private let resourceType = "json"
+    private let bundle: Bundle
+    private let resourceName: String
+    init(bundle: Bundle, resourceName: String) {
+        self.bundle = bundle
+        self.resourceName = resourceName
+    }
     
     func loadCities(completion: @escaping CityLoadingCompletionHandler) {
         guard loadingDispatchTask == nil else {
@@ -35,7 +42,7 @@ class FileCityProvider: CityProvider {
     }
     
     private func tryLoadingFromFile(completion: CityLoadingCompletionHandler?) {
-        guard let path = Bundle.main.path(forResource: "city.list.min", ofType: "json") else {
+        guard let path = bundle.path(forResource: resourceName, ofType: resourceType) else {
             loadingError = CityProviderError.fileReadingProblem
             completion?(.failure(loadingError!))
             return

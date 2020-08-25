@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         let iconProvider = NetworkWeatherIconProvider()
         let citiesVM = RecentLocationsViewModel(recentCitiesProvider: recentCitiesProvider, weatherProvider: weatherProvider, iconProvider: iconProvider)
-        let cityProvider = FileCityProvider()
+        let cityProvider = FileCityProvider(bundle: Bundle.main, resourceName: "city.list.min")
         let citiesVC = RecentLocationsViewController(viewModel: citiesVM, cityProvider: cityProvider)
         let navigation = UINavigationController(rootViewController: citiesVC)
         window?.rootViewController = navigation
