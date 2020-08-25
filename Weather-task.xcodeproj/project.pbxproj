@@ -44,6 +44,21 @@
 		DF56067F24F40726001CA1FB /* URLSession+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF56067E24F40726001CA1FB /* URLSession+Extensions.swift */; };
 		DF56068124F40733001CA1FB /* UITableViewCell+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF56068024F40732001CA1FB /* UITableViewCell+Extensions.swift */; };
 		DF9CFCAA24F40E5C0004C6FA /* FakeWeatherAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9CFCA924F40E5C0004C6FA /* FakeWeatherAPIClient.swift */; };
+		DF9CFCAC24F430890004C6FA /* DetailForecastDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9CFCAB24F430890004C6FA /* DetailForecastDTO.swift */; };
+		DF9CFCAE24F4326D0004C6FA /* WeatherForecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9CFCAD24F4326D0004C6FA /* WeatherForecast.swift */; };
+		DF9CFCB024F4403B0004C6FA /* HourlyForecastCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9CFCAF24F4403B0004C6FA /* HourlyForecastCellViewModel.swift */; };
+		DF9CFCB224F448190004C6FA /* HourlyForecastTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9CFCB124F448190004C6FA /* HourlyForecastTableCell.swift */; };
+		DF9CFCB424F45B310004C6FA /* DailyForecastCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9CFCB324F45B310004C6FA /* DailyForecastCellViewModel.swift */; };
+		DF9CFCB624F45B620004C6FA /* DailyForecastTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9CFCB524F45B620004C6FA /* DailyForecastTableCell.swift */; };
+		DF9CFCB824F45C7C0004C6FA /* CurrentForecastCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9CFCB724F45C7C0004C6FA /* CurrentForecastCellViewModel.swift */; };
+		DF9CFCBA24F45CCB0004C6FA /* CurrentForecastTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9CFCB924F45CCB0004C6FA /* CurrentForecastTableCell.swift */; };
+		DF9CFCBC24F45E6E0004C6FA /* AnyTableCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9CFCBB24F45E6E0004C6FA /* AnyTableCellViewModel.swift */; };
+		DF9CFCBE24F45E840004C6FA /* AnyTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9CFCBD24F45E840004C6FA /* AnyTableCell.swift */; };
+		DF9CFCC024F45EA50004C6FA /* ForecastDateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9CFCBF24F45EA50004C6FA /* ForecastDateManager.swift */; };
+		DF9CFCC224F4680F0004C6FA /* ForecastSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9CFCC124F4680F0004C6FA /* ForecastSectionHeaderView.swift */; };
+		DF9CFCC624F48A9C0004C6FA /* WeatherForecastSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9CFCC524F48A9C0004C6FA /* WeatherForecastSection.swift */; };
+		DF9CFCC824F4915A0004C6FA /* BasicWeatherDataCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9CFCC724F4915A0004C6FA /* BasicWeatherDataCell.swift */; };
+		DF9CFCCA24F492130004C6FA /* BasicWeatherCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9CFCC924F492130004C6FA /* BasicWeatherCellViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -98,6 +113,21 @@
 		DF56067E24F40726001CA1FB /* URLSession+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+Extensions.swift"; sourceTree = "<group>"; };
 		DF56068024F40732001CA1FB /* UITableViewCell+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+Extensions.swift"; sourceTree = "<group>"; };
 		DF9CFCA924F40E5C0004C6FA /* FakeWeatherAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeWeatherAPIClient.swift; sourceTree = "<group>"; };
+		DF9CFCAB24F430890004C6FA /* DetailForecastDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailForecastDTO.swift; sourceTree = "<group>"; };
+		DF9CFCAD24F4326D0004C6FA /* WeatherForecast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherForecast.swift; sourceTree = "<group>"; };
+		DF9CFCAF24F4403B0004C6FA /* HourlyForecastCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyForecastCellViewModel.swift; sourceTree = "<group>"; };
+		DF9CFCB124F448190004C6FA /* HourlyForecastTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyForecastTableCell.swift; sourceTree = "<group>"; };
+		DF9CFCB324F45B310004C6FA /* DailyForecastCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyForecastCellViewModel.swift; sourceTree = "<group>"; };
+		DF9CFCB524F45B620004C6FA /* DailyForecastTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyForecastTableCell.swift; sourceTree = "<group>"; };
+		DF9CFCB724F45C7C0004C6FA /* CurrentForecastCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentForecastCellViewModel.swift; sourceTree = "<group>"; };
+		DF9CFCB924F45CCB0004C6FA /* CurrentForecastTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentForecastTableCell.swift; sourceTree = "<group>"; };
+		DF9CFCBB24F45E6E0004C6FA /* AnyTableCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyTableCellViewModel.swift; sourceTree = "<group>"; };
+		DF9CFCBD24F45E840004C6FA /* AnyTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyTableCell.swift; sourceTree = "<group>"; };
+		DF9CFCBF24F45EA50004C6FA /* ForecastDateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastDateManager.swift; sourceTree = "<group>"; };
+		DF9CFCC124F4680F0004C6FA /* ForecastSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastSectionHeaderView.swift; sourceTree = "<group>"; };
+		DF9CFCC524F48A9C0004C6FA /* WeatherForecastSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherForecastSection.swift; sourceTree = "<group>"; };
+		DF9CFCC724F4915A0004C6FA /* BasicWeatherDataCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicWeatherDataCell.swift; sourceTree = "<group>"; };
+		DF9CFCC924F492130004C6FA /* BasicWeatherCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicWeatherCellViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,6 +201,7 @@
 				DF56066D24F2E689001CA1FB /* CurrentWeather.swift */,
 				DF56067724F406EB001CA1FB /* Coordinates.swift */,
 				DF56067124F3C3FF001CA1FB /* LocationWeatherData.swift */,
+				DF9CFCAD24F4326D0004C6FA /* WeatherForecast.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -240,6 +271,7 @@
 				DF56066F24F2E7DE001CA1FB /* NetworkWeatherAPIClient.swift */,
 				DF56067524F3E9F2001CA1FB /* NetworkWeatherIconProvider.swift */,
 				DF9CFCA924F40E5C0004C6FA /* FakeWeatherAPIClient.swift */,
+				DF9CFCBF24F45EA50004C6FA /* ForecastDateManager.swift */,
 			);
 			path = Implementation;
 			sourceTree = "<group>";
@@ -277,6 +309,12 @@
 			isa = PBXGroup;
 			children = (
 				DF2D575B24F29D6B00C4CFC3 /* LocationWeatherViewController.swift */,
+				DF9CFCB124F448190004C6FA /* HourlyForecastTableCell.swift */,
+				DF9CFCB524F45B620004C6FA /* DailyForecastTableCell.swift */,
+				DF9CFCB924F45CCB0004C6FA /* CurrentForecastTableCell.swift */,
+				DF9CFCBD24F45E840004C6FA /* AnyTableCell.swift */,
+				DF9CFCC124F4680F0004C6FA /* ForecastSectionHeaderView.swift */,
+				DF9CFCC724F4915A0004C6FA /* BasicWeatherDataCell.swift */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -285,6 +323,12 @@
 			isa = PBXGroup;
 			children = (
 				DF2D575924F29D5800C4CFC3 /* LocationWeatherViewModel.swift */,
+				DF9CFCAF24F4403B0004C6FA /* HourlyForecastCellViewModel.swift */,
+				DF9CFCB324F45B310004C6FA /* DailyForecastCellViewModel.swift */,
+				DF9CFCB724F45C7C0004C6FA /* CurrentForecastCellViewModel.swift */,
+				DF9CFCBB24F45E6E0004C6FA /* AnyTableCellViewModel.swift */,
+				DF9CFCC524F48A9C0004C6FA /* WeatherForecastSection.swift */,
+				DF9CFCC924F492130004C6FA /* BasicWeatherCellViewModel.swift */,
 			);
 			path = viewModel;
 			sourceTree = "<group>";
@@ -321,6 +365,7 @@
 			children = (
 				DF294DC224F0268F008200C2 /* CityDTO.swift */,
 				DF56066B24F2DF02001CA1FB /* CurrentWeatherDTO.swift */,
+				DF9CFCAB24F430890004C6FA /* DetailForecastDTO.swift */,
 			);
 			path = DTOs;
 			sourceTree = "<group>";
@@ -466,35 +511,50 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DF9CFCC224F4680F0004C6FA /* ForecastSectionHeaderView.swift in Sources */,
+				DF9CFCC624F48A9C0004C6FA /* WeatherForecastSection.swift in Sources */,
+				DF9CFCBA24F45CCB0004C6FA /* CurrentForecastTableCell.swift in Sources */,
 				DF56066724F2C6C6001CA1FB /* RecentLocationTableCell.swift in Sources */,
 				DF56067224F3C3FF001CA1FB /* LocationWeatherData.swift in Sources */,
 				DF56067624F3E9F2001CA1FB /* NetworkWeatherIconProvider.swift in Sources */,
 				DF56065A24F2B15B001CA1FB /* UserDefaultsRecentlyViewedCitiesProvider.swift in Sources */,
+				DF9CFCB424F45B310004C6FA /* DailyForecastCellViewModel.swift in Sources */,
 				DF294DC824F027B1008200C2 /* SelectLocationViewController.swift in Sources */,
 				DF56067024F2E7DE001CA1FB /* NetworkWeatherAPIClient.swift in Sources */,
 				DF56066324F2C257001CA1FB /* RecentLocationsViewModel.swift in Sources */,
 				DF56066524F2C3E6001CA1FB /* RecentLocationCellViewModel.swift in Sources */,
 				DF56068124F40733001CA1FB /* UITableViewCell+Extensions.swift in Sources */,
+				DF9CFCCA24F492130004C6FA /* BasicWeatherCellViewModel.swift in Sources */,
+				DF9CFCBC24F45E6E0004C6FA /* AnyTableCellViewModel.swift in Sources */,
 				DF2D575A24F29D5800C4CFC3 /* LocationWeatherViewModel.swift in Sources */,
 				DF56067D24F4071D001CA1FB /* Date+Extensions.swift in Sources */,
 				DF56067824F406EB001CA1FB /* Coordinates.swift in Sources */,
 				DF294D9F24F0219C008200C2 /* AppDelegate.swift in Sources */,
+				DF9CFCB224F448190004C6FA /* HourlyForecastTableCell.swift in Sources */,
 				DF2D575C24F29D6B00C4CFC3 /* LocationWeatherViewController.swift in Sources */,
 				DF56067F24F40726001CA1FB /* URLSession+Extensions.swift in Sources */,
 				DF294DD024F02821008200C2 /* CityProvider.swift in Sources */,
 				DF56067B24F40713001CA1FB /* String+Extensions.swift in Sources */,
 				DF56066124F2C20D001CA1FB /* RecentLocationsViewController.swift in Sources */,
 				DF56066E24F2E689001CA1FB /* CurrentWeather.swift in Sources */,
+				DF9CFCB824F45C7C0004C6FA /* CurrentForecastCellViewModel.swift in Sources */,
 				DF2D574824F28FAD00C4CFC3 /* SelectLocationCellViewModel.swift in Sources */,
+				DF9CFCC024F45EA50004C6FA /* ForecastDateManager.swift in Sources */,
 				DF294DC324F0268F008200C2 /* CityDTO.swift in Sources */,
 				DF56066924F2DB91001CA1FB /* WeatherAPIClient.swift in Sources */,
 				DF56067424F3E762001CA1FB /* WeatherIconProvider.swift in Sources */,
+				DF9CFCAE24F4326D0004C6FA /* WeatherForecast.swift in Sources */,
 				DF2D574424F27E4400C4CFC3 /* CityDataSourceImpl.swift in Sources */,
+				DF9CFCBE24F45E840004C6FA /* AnyTableCell.swift in Sources */,
 				DF56065824F2B128001CA1FB /* RecentlyViewedCitiesProvider.swift in Sources */,
 				DF2D574224F27E1600C4CFC3 /* FileCityProvider.swift in Sources */,
 				DF56066C24F2DF02001CA1FB /* CurrentWeatherDTO.swift in Sources */,
+				DF9CFCB024F4403B0004C6FA /* HourlyForecastCellViewModel.swift in Sources */,
+				DF9CFCAC24F430890004C6FA /* DetailForecastDTO.swift in Sources */,
 				DF2D573D24F16FB900C4CFC3 /* CityDataSource.swift in Sources */,
 				DF294DCD24F02800008200C2 /* SelectLocationViewModel.swift in Sources */,
+				DF9CFCC824F4915A0004C6FA /* BasicWeatherDataCell.swift in Sources */,
+				DF9CFCB624F45B620004C6FA /* DailyForecastTableCell.swift in Sources */,
 				DF9CFCAA24F40E5C0004C6FA /* FakeWeatherAPIClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
