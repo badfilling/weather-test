@@ -25,36 +25,6 @@ struct CurrentWeatherDTO: Decodable {
     }
 }
 
-struct CurrentWeatherMainDTO: Decodable {
-    let temperature: Double?
-    let maxTemperature: Double?
-    let minTemperature: Double?
-    let temperatureFeelsLike: Double?
-    let pressure: Double?
-    let humidity: Double?
-    
-    enum CodingKeys: String, CodingKey {
-        case temperature = "temp"
-        case temperatureFeelsLike = "feels_like"
-        case maxTemperature = "temp_max"
-        case minTemperature = "temp_min"
-        case pressure
-        case humidity
-    }
-}
-
-struct WindDTO: Decodable {
-    let speed: Double?
-}
-
-struct CloudsDTO: Decodable {
-    let all: Double?
-}
-struct WeatherConditionDTO: Decodable {
-    let description: String?
-    let icon: String?
-}
-
 extension CurrentWeatherDTO {
     func convert() throws -> CurrentWeather {
         guard main?.temperature != nil else { throw NetworkError.dataCorrupted }
