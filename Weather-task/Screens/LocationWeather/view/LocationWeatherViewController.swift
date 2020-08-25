@@ -51,15 +51,14 @@ class LocationWeatherViewController: UIViewController {
         tableView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            //            make.top.equalTo(rowStack.snp.bottom).offset(16)
         }
     }
     
     func bindViewsRx() {
         viewModel.tableReloadObservable
             .observeOn(MainScheduler.asyncInstance)
-            .subscribe(onNext: { [weak self] _ in
-                self?.tableView.reloadData()
+            .subscribe(onNext: { [weak self] section in
+                self?.tableView.reloadSections([section.rawValue], with: .automatic)
             }).disposed(by: disposeBag)
         
         viewModel.dataLoadingErrorObservable

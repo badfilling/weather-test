@@ -43,6 +43,7 @@
 		DF56067F24F40726001CA1FB /* URLSession+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF56067E24F40726001CA1FB /* URLSession+Extensions.swift */; };
 		DF56068124F40733001CA1FB /* UITableViewCell+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF56068024F40732001CA1FB /* UITableViewCell+Extensions.swift */; };
 		DF6956B524F5233300AE02FF /* WeatherIconImageSetService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF6956B424F5233300AE02FF /* WeatherIconImageSetService.swift */; };
+		DF6956BA24F526CA00AE02FF /* LocationWeatherViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF6956B924F526CA00AE02FF /* LocationWeatherViewModelTests.swift */; };
 		DF9CFCAA24F40E5C0004C6FA /* FakeWeatherAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9CFCA924F40E5C0004C6FA /* FakeWeatherAPIClient.swift */; };
 		DF9CFCAC24F430890004C6FA /* DetailForecastDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9CFCAB24F430890004C6FA /* DetailForecastDTO.swift */; };
 		DF9CFCAE24F4326D0004C6FA /* WeatherForecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9CFCAD24F4326D0004C6FA /* WeatherForecast.swift */; };
@@ -131,6 +132,7 @@
 		DF56067E24F40726001CA1FB /* URLSession+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+Extensions.swift"; sourceTree = "<group>"; };
 		DF56068024F40732001CA1FB /* UITableViewCell+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+Extensions.swift"; sourceTree = "<group>"; };
 		DF6956B424F5233300AE02FF /* WeatherIconImageSetService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherIconImageSetService.swift; sourceTree = "<group>"; };
+		DF6956B924F526CA00AE02FF /* LocationWeatherViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationWeatherViewModelTests.swift; sourceTree = "<group>"; };
 		DF9CFCA924F40E5C0004C6FA /* FakeWeatherAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeWeatherAPIClient.swift; sourceTree = "<group>"; };
 		DF9CFCAB24F430890004C6FA /* DetailForecastDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailForecastDTO.swift; sourceTree = "<group>"; };
 		DF9CFCAD24F4326D0004C6FA /* WeatherForecast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherForecast.swift; sourceTree = "<group>"; };
@@ -428,6 +430,14 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		DF6956B624F5269400AE02FF /* LocationWeather */ = {
+			isa = PBXGroup;
+			children = (
+				DF6956B924F526CA00AE02FF /* LocationWeatherViewModelTests.swift */,
+			);
+			path = LocationWeather;
+			sourceTree = "<group>";
+		};
 		DFB9DE3324F4F2B700CF67C1 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -451,18 +461,19 @@
 		DFF6D6DF24F50962008785B9 /* ScreensTests */ = {
 			isa = PBXGroup;
 			children = (
-				DFF6D6E024F5096C008785B9 /* RecentLocationsTests */,
+				DF6956B624F5269400AE02FF /* LocationWeather */,
+				DFF6D6E024F5096C008785B9 /* RecentLocations */,
 			);
 			path = ScreensTests;
 			sourceTree = "<group>";
 		};
-		DFF6D6E024F5096C008785B9 /* RecentLocationsTests */ = {
+		DFF6D6E024F5096C008785B9 /* RecentLocations */ = {
 			isa = PBXGroup;
 			children = (
 				DFF6D6E124F509B2008785B9 /* RecentLocationCellViewModelTests.swift */,
 				DFF6D6E824F50E54008785B9 /* RecentLocationsViewModelTests.swift */,
 			);
-			path = RecentLocationsTests;
+			path = RecentLocations;
 			sourceTree = "<group>";
 		};
 		DFF6D6E324F509EC008785B9 /* Mocks */ = {
@@ -669,6 +680,7 @@
 				DFF6D6E224F509B2008785B9 /* RecentLocationCellViewModelTests.swift in Sources */,
 				DFF6D6D024F4FEB9008785B9 /* CityProviderMock.swift in Sources */,
 				DFF6D6E924F50E54008785B9 /* RecentLocationsViewModelTests.swift in Sources */,
+				DF6956BA24F526CA00AE02FF /* LocationWeatherViewModelTests.swift in Sources */,
 				DFB9DE3224F4F1B900CF67C1 /* FileCityProviderTests.swift in Sources */,
 				DFF6D6D224F4FF66008785B9 /* UserDefaultRecentlyViewedCitiesProviderTests.swift in Sources */,
 				DFF6D6E524F50A04008785B9 /* WeatherIconProviderMock.swift in Sources */,
