@@ -25,10 +25,6 @@ class CurrentForecastTableCell: UITableViewCell, AnyTableCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
     }
-//    override init(frame: CGRect) {
-//        super.init(frame: frame)
-//        setupViews()
-//    }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -39,10 +35,12 @@ class CurrentForecastTableCell: UITableViewCell, AnyTableCell {
     }
     
     func setupViews() {
+        self.backgroundColor = .clear
         contentView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(32)
-            make.top.bottom.equalToSuperview()
+            make.top.equalToSuperview().offset(12)
+            make.bottom.equalToSuperview().offset(-12)
         }
         
         contentView.addSubview(valueLabel)

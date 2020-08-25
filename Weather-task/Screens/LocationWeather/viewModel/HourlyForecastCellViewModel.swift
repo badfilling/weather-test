@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HourlyForecastCellViewModel: AnyCollectionCellViewModel {
+class HourlyForecastCellViewModel: AnyTableCellViewModel {
     
     let temperatureDescription: String
     let dateDescription: String
@@ -37,7 +37,7 @@ class HourlyForecastCellViewModel: AnyCollectionCellViewModel {
         return nil
     }
     
-    func dequeue(collectionView: UICollectionView, for indexPath: IndexPath) -> AnyCollectionCell {
-        return collectionView.dequeueReusableCell(withReuseIdentifier: HourlyForecastCollectionCell.cellIdentifier, for: indexPath) as! HourlyForecastCollectionCell
+    func dequeue(tableView: UITableView, for indexPath: IndexPath) -> AnyTableCell {
+        return tableView.dequeueReusableCell(withIdentifier: HourlyForecastTableCell.cellIdentifier, for: indexPath) as! HourlyForecastTableCell
     }
 }

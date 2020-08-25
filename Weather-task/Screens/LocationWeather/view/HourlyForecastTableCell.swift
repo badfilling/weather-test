@@ -12,7 +12,7 @@ import SnapKit
 class HourlyForecastTableCell: UITableViewCell, AnyTableCell {
     let timeLabel: UILabel = {
         let label = UILabel()
-        label.font = .preferredFont(forTextStyle: .subheadline)
+        label.font = .preferredFont(forTextStyle: .headline)
         return label
     }()
     
@@ -24,7 +24,7 @@ class HourlyForecastTableCell: UITableViewCell, AnyTableCell {
     
     let temperatureLabel: UILabel = {
         let label = UILabel()
-        label.font = .preferredFont(forTextStyle: .subheadline)
+        label.font = .preferredFont(forTextStyle: .headline)
         return label
     }()
     
@@ -47,6 +47,7 @@ class HourlyForecastTableCell: UITableViewCell, AnyTableCell {
     }
     
     func setupViews() {
+        self.backgroundColor = .clear
         contentView.addSubview(timeLabel)
         timeLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(32)
@@ -55,10 +56,10 @@ class HourlyForecastTableCell: UITableViewCell, AnyTableCell {
         
         contentView.addSubview(weatherIcon)
         weatherIcon.snp.makeConstraints { make in
-            make.width.height.equalTo(32)
+            make.width.height.equalTo(40)
             make.top.greaterThanOrEqualToSuperview()
             make.bottom.lessThanOrEqualToSuperview()
-            make.leading.equalTo(timeLabel.snp.trailing).offset(24)
+            make.leading.equalToSuperview().offset(102)
         }
         
         contentView.addSubview(temperatureLabel)

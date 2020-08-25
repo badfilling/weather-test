@@ -17,40 +17,31 @@ class LocationWeatherViewModel {
     private let weatherIconProvider: WeatherIconProvider
     private let dataLoadingErrorRelay = BehaviorRelay<String?>(value: nil)
     private let dateManager: ForecastDateManager
-    private lazy var temperatureRelay: BehaviorRelay<String?> = {
-        return BehaviorRelay(value: createTemperatureDescription())
-    }()
-    private lazy var titleRelay: BehaviorRelay<String?> = {
-        return BehaviorRelay(value: createTitle())
-    }()
-    private lazy var weatherIconRelay: BehaviorRelay<UIImage?> = {
-        return BehaviorRelay<UIImage?>(value: nil)
+    private lazy var tableReloadRelay: BehaviorRelay<Any?> = {
+        return BehaviorRelay<Any?>(value: nil)
     }()
     
     lazy var dataLoadingErrorObservable: Observable<String> = {
         return dataLoadingErrorRelay.skip(1).compactMap { $0 }.debounce(.seconds(5), scheduler: MainScheduler.asyncInstance)
     }()
-    lazy var titleObservable: Observable<String> = {
-        return titleRelay.compactMap { $0 }
-    }()
-    lazy var temperatureObservable: Observable<String> = {
-        return temperatureRelay.compactMap { $0 }
-    }()
-    lazy var weatherIconObservable: Observable<UIImage> = {
-        return weatherIconRelay.compactMap { $0 }
+    lazy var tableReloadObservable: Observable<Any> = {
+        return tableReloadRelay.skip(2).compactMap { $0 }
     }()
     
-    var cellsData: [Section: [AnyCellViewModel]] = [
+    var cellsData: [WeatherForecastSection: [AnyTableCellViewModel]] = [
+        .primaryData: [BasicWeatherCellViewModel](),
         .basicData: [HourlyForecastCellViewModel](),
         .hourlyForecast: [HourlyForecastCellViewModel](),
         .dailyForecast: [HourlyForecastCellViewModel]()
-    ]
+    ]    
     init(location: LocationWeatherData, weatherProvider: WeatherAPIClient, weatherIconProvider: WeatherIconProvider, dateManager: ForecastDateManager) {
         self.location = location
         self.weatherProvider = weatherProvider
         self.weatherIconProvider = weatherIconProvider
         self.dateManager = dateManager
-        loadWeatherIcon()
+        updatePrimaryData()
+        updateDetailParameters()
+        
         loadWeatherIfNeeded(for: location)
         loadWeatherDetails()
     }
@@ -63,20 +54,17 @@ class LocationWeatherViewModel {
     
     private func createTemperatureDescription() -> String? {
         if let temp = location.currentWeather?.temperature {
-            return "\(temp)°"
+            return "\(Int(temp))°"
         }
         return nil
     }
     
-    private func loadWeatherIcon() {
-        if let iconName = location.currentWeather?.weatherConditionIconName {
-            _ = weatherIconProvider.setImage(for: iconName) { [weak self] data in
-                if let data = data {
-                    let image = UIImage(data: data)
-                    self?.weatherIconRelay.accept(image)
-                }
-            }
-        }
+    private func getTemperatureColor() -> UIColor {
+        guard let temp = location.currentWeather?.temperature else { return .black }
+        let casted = Int(temp)
+        if casted < 10 { return .blue }
+        if casted > 20 { return .red }
+        return .black
     }
     
     private func loadWeatherIfNeeded(for location: LocationWeatherData) {
@@ -97,7 +85,8 @@ class LocationWeatherViewModel {
             case .success(let currentWeather):
                 self?.location.currentWeather = currentWeather
                 self?.location.forecastTimestamp = Date().timeIntervalSince1970
-                self?.updateBasicData()
+                self?.updatePrimaryData()
+                self?.updateDetailParameters()
             }
         }
     }
@@ -107,84 +96,54 @@ class LocationWeatherViewModel {
             guard let `self` = self else { return }
             switch result {
             case .success(let forecasts):
-                print("x")
                 var todayForecasts = [WeatherForecast]()
                 var nextDaysForecasts = [WeatherForecast]()
                 for forecast in forecasts {
                     self.dateManager.isToday(utc: forecast.dateISO) ? todayForecasts.append(forecast) : nextDaysForecasts.append(forecast)
                 }
+                self.updateTodayDetails(with: todayForecasts)
+                self.updateFutureDays(with: nextDaysForecasts)
             case .failure(_):
                 self.dataLoadingErrorRelay.accept("Problem with loading forecast for future days")
             }
         }
     }
     
-    func updateTodayDetails(with forecasts: [WeatherForecast]) {
-//        let cellModels =
-        for forecast in forecasts {
-            
+    func updatePrimaryData() {
+        let primaryCellViewModel = BasicWeatherCellViewModel(temperatureDescription: createTemperatureDescription() ?? "Unknown", titleDescription: createTitle(), imageLoader: weatherIconProvider, weatherIconName: location.currentWeather?.weatherConditionIconName, temperatureLabelColor: getTemperatureColor())
+        cellsData[.primaryData] = [primaryCellViewModel]
+    }
+    
+    func updateDetailParameters() {
+        var cellModels = [CurrentForecastCellViewModel]()
+        if let currentWeather = location.currentWeather {
+            cellModels.append(CurrentForecastCellViewModel(titleDescription: "Feels like", valueDescription: currentWeather.temperatureFeelsLike == nil ? "-" : "\(Int(currentWeather.temperatureFeelsLike!))°"))
+            cellModels.append(CurrentForecastCellViewModel(titleDescription: "Humidity", valueDescription: currentWeather.humidity == nil ? "-" : "\(Int(currentWeather.humidity!))%"))
+            cellModels.append(CurrentForecastCellViewModel(titleDescription: "Pressure", valueDescription: currentWeather.pressure == nil ? "-" : "\(Int(currentWeather.pressure!)) hPa"))
+            cellModels.append(CurrentForecastCellViewModel(titleDescription: "Clouds", valueDescription: currentWeather.cloudsPercent == nil ? "-" : "\(Int(currentWeather.cloudsPercent!))%"))
+            cellModels.append(CurrentForecastCellViewModel(titleDescription: "Wind", valueDescription: currentWeather.windSpeed == nil ? "-" : "\(currentWeather.windSpeed!) m/s"))
         }
-        
+        cellsData[.basicData] = cellModels
+        tableReloadRelay.accept(())
     }
     
-    private func updateBasicData() {
-        temperatureRelay.accept(createTemperatureDescription())
-        titleRelay.accept(createTitle())
-        loadWeatherIcon()
-    }
-}
-
-protocol AnyCellType: UICollectionViewCell {
-    static var cellIdentifier: String { get }
-    func setup(with model: AnyCellViewModel)
-}
-extension AnyCellType {
-    static var cellIdentifier: String {
-        return String(describing: Self.self)
-    }
-}
-
-
-protocol AnyCellViewModel {
-    func dequeue(collectionView: UICollectionView, for indexPath: IndexPath) -> AnyCellType
-}
-
-enum Section: Int {
-    case basicData = 0
-    case hourlyForecast
-    case dailyForecast
-}
-
-class ForecastDateManager {
-    let UTCformatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-mm-dd HH:mm:ss"
-        formatter.timeZone = TimeZone(abbreviation: "UTC")
-        return formatter
-    }()
-    
-    let currentTimeFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.timeZone = TimeZone.current
-        formatter.dateFormat = "h a"
-        return formatter
-    }()
-    
-    let calendar = Calendar.current
-    
-    func isToday(utc: String) -> Bool {
-        guard let current = utcToLocal(utc: utc) else { return false }
-        return calendar.isDateInToday(current)
+    func updateTodayDetails(with forecasts: [WeatherForecast]) {
+        var cellModels = [HourlyForecastCellViewModel]()
+        for forecast in forecasts {
+            cellModels.append(HourlyForecastCellViewModel(temperatureDescription: "\(forecast.temperature)°", dateDescription: dateManager.hours(of: forecast.dateISO), imageLoader: weatherIconProvider, weatherIconName: forecast.weatherConditionIconName))
+        }
+        cellsData[.hourlyForecast] = cellModels
+        tableReloadRelay.accept(())
     }
     
-    func dayOfWeek(utc: String) -> String? {
-        guard let currentDate = utcToLocal(utc: utc) else { return nil }
-        return calendar.weekdaySymbols[calendar.component(.weekday, from: currentDate)]
-    }
-    
-    private func utcToLocal(utc: String) -> Date? {
-        guard let utc = UTCformatter.date(from: utc) else { return nil }
-        let local = currentTimeFormatter.string(from: utc)
-        return currentTimeFormatter.date(from: local)
+    func updateFutureDays(with forecasts: [WeatherForecast]) {
+        var cellModels = [DailyForecastCellViewModel]()
+
+        for forecast in forecasts {
+            cellModels.append(DailyForecastCellViewModel(minTemperatureDescription: "\(forecast.minTemperature)°", maxTemperatureDescription: "\(forecast.maxTemperature)°", dateDescription: dateManager.dayWithTime(utc: forecast.dateISO) ?? "Unknown", imageLoader: weatherIconProvider, weatherIconName: forecast.weatherConditionIconName))
+        }
+
+        cellsData[.dailyForecast] = cellModels
+        tableReloadRelay.accept(())
     }
 }

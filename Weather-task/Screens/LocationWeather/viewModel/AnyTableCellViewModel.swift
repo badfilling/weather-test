@@ -8,5 +8,5 @@
 
 import UIKit
 protocol AnyTableCellViewModel {
-    func dequeue(collectionView: UITableView, for indexPath: IndexPath) -> AnyTableCell
+    func dequeue(tableView: UITableView, for indexPath: IndexPath) -> AnyTableCell
 }

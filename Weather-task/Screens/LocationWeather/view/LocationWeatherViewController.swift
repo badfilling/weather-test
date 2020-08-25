@@ -13,31 +13,18 @@ import RxSwift
 
 class LocationWeatherViewController: UIViewController {
     let viewModel: LocationWeatherViewModel
-    
-    let collectionView: UICollectionView = {
-        let collection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-        collection.backgroundColor = .none
-        return collection
-    }()
-    
-    let titleLabel: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 2
-        label.textAlignment = .center
-        label.font = .systemFont(ofSize: 24, weight: .bold)
-        return label
-    }()
-    
-    let weatherIcon: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleToFill
-        return imageView
-    }()
-    
-    let temperatureLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 30, weight: .bold)
-        return label
+    let sizingHeaderView = ForecastSectionHeaderView(frame: .zero)
+    let tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.register(CurrentForecastTableCell.self, forCellReuseIdentifier: CurrentForecastTableCell.cellIdentifier)
+        tableView.register(HourlyForecastTableCell.self, forCellReuseIdentifier: HourlyForecastTableCell.cellIdentifier)
+        tableView.register(DailyForecastTableCell.self, forCellReuseIdentifier: DailyForecastTableCell.cellIdentifier)
+        tableView.register(BasicWeatherDataCell.self, forCellReuseIdentifier: BasicWeatherDataCell.cellIdentifier)
+        tableView.register(ForecastSectionHeaderView.self, forHeaderFooterViewReuseIdentifier: ForecastSectionHeaderView.viewReuseIdentifier)
+        tableView.separatorStyle = .none
+        tableView.allowsSelection = false
+        tableView.backgroundColor = .clear
+        return tableView
     }()
     
     init(viewModel: LocationWeatherViewModel) {
@@ -51,57 +38,29 @@ class LocationWeatherViewController: UIViewController {
     
     let disposeBag = DisposeBag()
     override func viewDidLoad() {
-//        title = "stub for weather"
-        navigationController?.navigationBar.prefersLargeTitles = false
-        navigationController?.isNavigationBarHidden = true
         setupViews()
         bindViewsRx()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.isNavigationBarHidden = false
-    }
     func setupViews() {
+        
         view.backgroundColor = .white
-        view.addSubview(titleLabel)
-        titleLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(8)
-        }
-        
-        let rowStack = UIStackView()
-        rowStack.axis = .horizontal
-        rowStack.distribution = .equalSpacing
-        rowStack.addArrangedSubview(weatherIcon)
-        rowStack.addArrangedSubview(temperatureLabel)
-        view.addSubview(rowStack)
-        
-        rowStack.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.width.equalToSuperview().multipliedBy(0.6)
-            make.top.equalTo(titleLabel.snp.bottom).offset(16)
-        }
-        view.addSubview(collectionView)
-        collectionView.snp.makeConstraints { make in
+        tableView.dataSource = self
+        tableView.delegate = self
+        view.addSubview(tableView)
+        tableView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
-            make.top.equalTo(rowStack.snp.bottom).offset(16)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            //            make.top.equalTo(rowStack.snp.bottom).offset(16)
         }
     }
     
     func bindViewsRx() {
-        viewModel.titleObservable
-            .bind(to: titleLabel.rx.text)
-            .disposed(by: disposeBag)
-        
-        viewModel.temperatureObservable
-            .bind(to: temperatureLabel.rx.text)
-            .disposed(by: disposeBag)
-        
-        viewModel.weatherIconObservable
-            .bind(to: weatherIcon.rx.image)
-            .disposed(by: disposeBag)
+        viewModel.tableReloadObservable
+            .observeOn(MainScheduler.asyncInstance)
+            .subscribe(onNext: { [weak self] _ in
+                self?.tableView.reloadData()
+            }).disposed(by: disposeBag)
         
         viewModel.dataLoadingErrorObservable
             .observeOn(MainScheduler.asyncInstance)
@@ -113,26 +72,42 @@ class LocationWeatherViewController: UIViewController {
     }
 }
 
-extension LocationWeatherViewController: UICollectionViewDataSource {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
+extension LocationWeatherViewController: UITableViewDataSource, UITableViewDelegate {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel.cellsData.keys.count
     }
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let section = Section(rawValue: section) else { return 0}
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let section = WeatherForecastSection(rawValue: section) else { return 0 }
         return viewModel.cellsData[section]?.count ?? 0
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let section = Section(rawValue: indexPath.section),
-            let sectionData = viewModel.cellsData[section] else {
-                return UICollectionViewCell()
-        }
-        let cellViewModel = sectionData[indexPath.row]
-        let cell = cellViewModel.dequeue(collectionView: collectionView, for: indexPath)
-        cell.setup(with: cellViewModel)
-        return cell
-//        return sectionData[indexPath.row].dequeue(collectionView: collectionView)
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if section == 0 { return nil }
+        let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: ForecastSectionHeaderView.viewReuseIdentifier) as! ForecastSectionHeaderView
+        view.titleLabel.text = WeatherForecastSection(rawValue: section)?.description
+        return view
+    }
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0 { return 0 }
+        sizingHeaderView.titleLabel.text = "z"
+        return sizingHeaderView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
     }
     
-    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let section = WeatherForecastSection(rawValue: indexPath.section),
+            let sectionData = viewModel.cellsData[section] else {
+                return UITableViewCell()
+        }
+        let cellViewModel = sectionData[indexPath.row]
+        let cell = cellViewModel.dequeue(tableView: tableView, for: indexPath)
+        cell.setup(with: cellViewModel)
+        return cell
+    }
+}
+
+extension LocationWeatherViewController {
+    static var primaryBackgroundColor: UIColor {
+        return UIColor(red: 232.0/255.0, green: 244.0/255.0, blue: 248.0/255.0, alpha: 1.0)
+    }
 }

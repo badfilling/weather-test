@@ -1,5 +1,5 @@
 //
-//  DailyForecastCollectionCell.swift
+//  DailyForecastTableCell.swift
 //  Weather-task
 //
 //  Created by Artur Stepaniuk on 24/08/2020.
@@ -11,7 +11,7 @@ import Foundation
 import UIKit
 import SnapKit
 
-class DailyForecastCollectionCell: UICollectionViewCell, AnyCollectionCell {
+class DailyForecastTableCell: UITableViewCell, AnyTableCell {
     let timeLabel: UILabel = {
         let label = UILabel()
         label.font = .preferredFont(forTextStyle: .subheadline)
@@ -37,11 +37,14 @@ class DailyForecastCollectionCell: UICollectionViewCell, AnyCollectionCell {
     }()
     
     var onReuse: (() -> Void)?
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+//    override init(frame: CGRect) {
+//        super.init(frame: frame)
+//        setupViews()
+//    }
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
     }
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -49,12 +52,6 @@ class DailyForecastCollectionCell: UICollectionViewCell, AnyCollectionCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         onReuse?()
-    }
-    
-    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
-        let targetSize = CGSize(width: layoutAttributes.frame.width, height: 0)
-        layoutAttributes.frame.size = contentView.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel)
-        return layoutAttributes
     }
     
     func setupViews() {
@@ -85,7 +82,7 @@ class DailyForecastCollectionCell: UICollectionViewCell, AnyCollectionCell {
         }
     }
     
-    func setup(with model: AnyCollectionCellViewModel) {
+    func setup(with model: AnyTableCellViewModel) {
         guard let model = model as? DailyForecastCellViewModel else { return }
         timeLabel.text = model.dateDescription
         minTemperatureLabel.text = model.minTemperatureDescription

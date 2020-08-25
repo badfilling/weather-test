@@ -1,28 +1,28 @@
 //
-//  DailyForecastCellViewModel.swift
+//  BasicWeatherCellViewModel.swift
 //  Weather-task
 //
-//  Created by Artur Stepaniuk on 24/08/2020.
+//  Created by Artur Stepaniuk on 25/08/2020.
 //  Copyright © 2020 Artur Stepaniuk. All rights reserved.
 //
 
 import UIKit
 
-class DailyForecastCellViewModel: AnyTableCellViewModel {
+class BasicWeatherCellViewModel: AnyTableCellViewModel {
     
-    let minTemperatureDescription: String
-    let maxTemperatureDescription: String
-    let dateDescription: String
+    let temperatureDescription: String
+    let titleDescription: String
+    let temperatureLabelColor: UIColor
     
     private let imageLoader: WeatherIconProvider
     private let weatherIconName: String?
     
-    init(minTemperatureDescription: String, maxTemperatureDescription: String, dateDescription: String, imageLoader: WeatherIconProvider, weatherIconName: String?) {
-        self.minTemperatureDescription = minTemperatureDescription
-        self.maxTemperatureDescription = maxTemperatureDescription
-        self.dateDescription = dateDescription
+    init(temperatureDescription: String, titleDescription: String, imageLoader: WeatherIconProvider, weatherIconName: String?, temperatureLabelColor: UIColor) {
+        self.temperatureDescription = temperatureDescription
+        self.titleDescription = titleDescription
         self.imageLoader = imageLoader
         self.weatherIconName = weatherIconName
+        self.temperatureLabelColor = temperatureLabelColor
     }
     
     func setImage(for imageView: UIImageView) -> CancelLoadingHandler? {
@@ -40,6 +40,6 @@ class DailyForecastCellViewModel: AnyTableCellViewModel {
     }
     
     func dequeue(tableView: UITableView, for indexPath: IndexPath) -> AnyTableCell {
-        return tableView.dequeueReusableCell(withIdentifier: DailyForecastTableCell.cellIdentifier, for: indexPath) as! DailyForecastTableCell
+        return tableView.dequeueReusableCell(withIdentifier: BasicWeatherDataCell.cellIdentifier, for: indexPath) as! BasicWeatherDataCell
     }
 }

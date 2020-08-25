@@ -8,13 +8,11 @@
 
 import UIKit
 
-struct CurrentForecastCellViewModel: AnyCollectionCellViewModel {
+struct CurrentForecastCellViewModel: AnyTableCellViewModel {
     let titleDescription: String
     let valueDescription: String
     
-    func dequeue(collectionView: UICollectionView, for indexPath: IndexPath) -> AnyCollectionCell {
-        return collectionView.dequeueReusableCell(withReuseIdentifier: CurrentForecastCollectionCell.cellIdentifier, for: indexPath) as! CurrentForecastCollectionCell
+    func dequeue(tableView: UITableView, for indexPath: IndexPath) -> AnyTableCell {
+        return tableView.dequeueReusableCell(withIdentifier: CurrentForecastTableCell.cellIdentifier, for: indexPath) as! CurrentForecastTableCell
     }
-    
-    
 }
