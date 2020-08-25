@@ -86,7 +86,7 @@ class LocationWeatherViewModelTests: XCTestCase {
     
     func testCurrentWeatherSavedWhenLoaded() {
         let weather = prepareCurrentWeather()
-        weatherProvider.currentWeatherToReturn = weather
+        weatherProvider.currentWeatherToReturn = prepareLocation(currentWeather: weather)
         viewModel = LocationWeatherViewModel(location: prepareLocation(currentWeather: nil), weatherProvider: weatherProvider, weatherIconProvider: weatherIconProvider, dateManager: dateManager)
         
         let exp = expectation(description: "correct weather is saved")

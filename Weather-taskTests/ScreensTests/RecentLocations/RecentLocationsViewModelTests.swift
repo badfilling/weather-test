@@ -97,8 +97,8 @@ class RecentLocationsViewModelTests: XCTestCase {
     }
     
     func testCellReloadEventReceivedOnWeatherLoaded() {
-        weatherProvider.currentWeatherToReturn = prepareCurrentWeather()
-        let location = prepareLocation()
+        let location = prepareLocation(currentWeather: prepareCurrentWeather())
+        weatherProvider.currentWeatherToReturn = location
         let exp = expectation(description: "reload cell event received")
         
         viewModel.added(location: location)

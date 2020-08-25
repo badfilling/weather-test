@@ -10,12 +10,12 @@ import Foundation
 @testable import Weather_task
 class WeatherAPIClientMock: WeatherAPIClient {
     var taskToReturn: URLSessionDataTask? = nil
-    var currentWeatherToReturn: CurrentWeather? = nil
+    var currentWeatherToReturn: LocationWeatherData? = nil
     var forecastsToReturn: [WeatherForecast]? = nil
     var currentWeatherLoadedtimes = 0
     
     var forecastLoadedTimes = 0
-    func loadCurrentWeather(latitude: Double, longitude: Double, completion: @escaping (Result<CurrentWeather, Error>) -> Void) -> URLSessionDataTask? {
+    func loadCurrentWeather(latitude: Double, longitude: Double, completion: @escaping (Result<LocationWeatherData, Error>) -> Void) -> URLSessionDataTask? {
         currentWeatherLoadedtimes += 1
         if currentWeatherToReturn != nil {
             completion(.success(currentWeatherToReturn!))

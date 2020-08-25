@@ -9,7 +9,7 @@
 import Foundation
 
 struct CurrentWeatherMainDTO: Decodable {
-    let temperature: Double?
+    let temperature: Double
     let maxTemperature: Double?
     let minTemperature: Double?
     let temperatureFeelsLike: Double?

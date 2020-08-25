@@ -33,12 +33,12 @@ class FakeWeatherAPIClient: WeatherAPIClient {
         return nil
     }
     
-    func loadCurrentWeather(latitude: Double, longitude: Double, completion: @escaping (Result<CurrentWeather, Error>) -> Void) -> URLSessionDataTask? {
+    func loadCurrentWeather(latitude: Double, longitude: Double, completion: @escaping (Result<LocationWeatherData, Error>) -> Void) -> URLSessionDataTask? {
         let decoder = JSONDecoder()
         do {
             let data = currentWeatherJson.data(using: .utf8)
             let dto = try decoder.decode(CurrentWeatherDTO.self, from: data!)
-            let weather = try dto.convert()
+            let weather = try dto.toLocation()
             completion(.success(weather))
         } catch {
             completion(.failure(error))

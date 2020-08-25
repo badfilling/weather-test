@@ -75,9 +75,9 @@ class RecentLocationsViewModel {
             switch result {
             case .failure(_):
                 self?.dataLoadingErrorRelay.accept("Problem with loading forecast")
-            case .success(let currentWeather):
+            case .success(let loadedLocation):
                 var updatedLocation = location
-                updatedLocation.currentWeather = currentWeather
+                updatedLocation.currentWeather = loadedLocation.currentWeather
                 updatedLocation.forecastTimestamp = Date().timeIntervalSince1970
                 if let storedLocationIndex = self?.locationModels.firstIndex(where: { $0 == updatedLocation }) {
                     self?.locationModels[storedLocationIndex] = updatedLocation

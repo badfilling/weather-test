@@ -50,7 +50,7 @@ class NetworkWeatherAPIClient: WeatherAPIClient {
     }
     
     @discardableResult
-    func loadCurrentWeather(latitude: Double, longitude: Double, completion: @escaping (Result<CurrentWeather, Error>) -> Void) -> URLSessionDataTask? {
+    func loadCurrentWeather(latitude: Double, longitude: Double, completion: @escaping (Result<LocationWeatherData, Error>) -> Void) -> URLSessionDataTask? {
         do {
             let url = try prepareURL(queryParams: [
                 "lat": "\(latitude)",
@@ -59,7 +59,7 @@ class NetworkWeatherAPIClient: WeatherAPIClient {
                 switch result {
                 case .success(let dto):
                     do {
-                        let weather = try dto.convert()
+                        let weather = try dto.toLocation()
                         completion(.success(weather))
                     } catch {
                         completion(.failure(error))

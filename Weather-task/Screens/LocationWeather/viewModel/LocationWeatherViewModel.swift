@@ -85,8 +85,8 @@ class LocationWeatherViewModel {
             switch result {
             case .failure(_):
                 self?.dataLoadingErrorRelay.accept("Problem with loading forecast")
-            case .success(let currentWeather):
-                self?.location.currentWeather = currentWeather
+            case .success(let loadedLocation):
+                self?.location.currentWeather = loadedLocation.currentWeather
                 self?.location.forecastTimestamp = Date().timeIntervalSince1970
                 self?.updatePrimaryData()
                 self?.updateDetailParameters()
