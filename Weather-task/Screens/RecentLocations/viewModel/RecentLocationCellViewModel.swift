@@ -8,13 +8,13 @@
 
 import UIKit
 
-struct RecentLocationCellViewModel {
+struct RecentLocationCellViewModel: WeatherIconImageSetService {
     let title: String
     let timestamp: String?
     let temperature: String
     
-    private let imageLoader: WeatherIconProvider
-    private let weatherIconName: String?
+    let imageLoader: WeatherIconProvider
+    let weatherIconName: String?
         
     init(from location: LocationWeatherData, imageLoader: WeatherIconProvider) {
         let temperature = location.currentWeather?.temperature == nil ? "" : "\(Int(location.currentWeather!.temperature))°"
@@ -29,19 +29,5 @@ struct RecentLocationCellViewModel {
         self.temperature = temperature
         weatherIconName = location.currentWeather?.weatherConditionIconName
         self.imageLoader = imageLoader
-    }
-    
-    func setImage(for imageView: UIImageView) -> CancelLoadingHandler? {
-        if let weatherIconName = weatherIconName {
-            return imageLoader.setImage(for: weatherIconName) { imageData in
-                if let imageData = imageData {
-                    let image = UIImage(data: imageData)
-                    DispatchQueue.main.async {
-                        imageView.image = image
-                    }
-                }
-            }
-        }
-        return nil
     }
 }

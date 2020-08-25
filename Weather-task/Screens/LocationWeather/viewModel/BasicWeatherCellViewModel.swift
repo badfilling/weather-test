@@ -8,14 +8,14 @@
 
 import UIKit
 
-class BasicWeatherCellViewModel: AnyTableCellViewModel {
+class BasicWeatherCellViewModel: AnyTableCellViewModel, WeatherIconImageSetService {
     
     let temperatureDescription: String
     let titleDescription: String
     let temperatureLabelColor: UIColor
     
-    private let imageLoader: WeatherIconProvider
-    private let weatherIconName: String?
+    let imageLoader: WeatherIconProvider
+    let weatherIconName: String?
     
     init(temperatureDescription: String, titleDescription: String, imageLoader: WeatherIconProvider, weatherIconName: String?, temperatureLabelColor: UIColor) {
         self.temperatureDescription = temperatureDescription
@@ -23,20 +23,6 @@ class BasicWeatherCellViewModel: AnyTableCellViewModel {
         self.imageLoader = imageLoader
         self.weatherIconName = weatherIconName
         self.temperatureLabelColor = temperatureLabelColor
-    }
-    
-    func setImage(for imageView: UIImageView) -> CancelLoadingHandler? {
-        if let weatherIconName = weatherIconName {
-            return imageLoader.setImage(for: weatherIconName) { imageData in
-                if let imageData = imageData {
-                    let image = UIImage(data: imageData)
-                    DispatchQueue.main.async {
-                        imageView.image = image
-                    }
-                }
-            }
-        }
-        return nil
     }
     
     func dequeue(tableView: UITableView, for indexPath: IndexPath) -> AnyTableCell {
