@@ -16,30 +16,33 @@ class ForecastDateManager {
         return formatter
     }()
     
-    let currentTimeFormatter: DateFormatter = {
+    lazy var currentTimeFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.timeZone = TimeZone.current
+        formatter.timeZone = calendar.timeZone
         formatter.dateFormat = "h a"
         return formatter
     }()
     
-    let calendar = Calendar.current
+    let calendar: Calendar
+    init(calendar: Calendar = Calendar.current) {
+        self.calendar = calendar
+    }
     
     func isToday(utc: String) -> Bool {
         guard let currentDate = UTCformatter.date(from: utc) else { return false }
         return calendar.isDateInToday(currentDate)
     }
     
-    func hours(of time: String) -> String {
+    func hours(utc time: String) -> String {
         guard let utc = UTCformatter.date(from: time) else { return "" }
         return currentTimeFormatter.string(from: utc)
     }
     
-    func dayWithTime(utc: String) -> String? {
-        guard let currentDate = UTCformatter.date(from: utc) else { return nil }
+    func dayWithTime(utc: String) -> String {
+        guard let currentDate = UTCformatter.date(from: utc) else { return "" }
         let dayOfWeek = calendar.weekdaySymbols[calendar.component(.weekday, from: currentDate) - 1]
         
-        let hoursDescription = hours(of: utc)
+        let hoursDescription = hours(utc: utc)
         return "\(dayOfWeek),\n\(hoursDescription)"
     }
 }

@@ -130,7 +130,7 @@ class LocationWeatherViewModel {
     func updateTodayDetails(with forecasts: [WeatherForecast]) {
         var cellModels = [HourlyForecastCellViewModel]()
         for forecast in forecasts {
-            cellModels.append(HourlyForecastCellViewModel(temperatureDescription: "\(forecast.temperature)°", dateDescription: dateManager.hours(of: forecast.dateISO), imageLoader: weatherIconProvider, weatherIconName: forecast.weatherConditionIconName))
+            cellModels.append(HourlyForecastCellViewModel(temperatureDescription: "\(forecast.temperature)°", dateDescription: dateManager.hours(utc: forecast.dateISO), imageLoader: weatherIconProvider, weatherIconName: forecast.weatherConditionIconName))
         }
         cellsData[.hourlyForecast] = cellModels
         tableReloadRelay.accept(())
@@ -140,7 +140,7 @@ class LocationWeatherViewModel {
         var cellModels = [DailyForecastCellViewModel]()
 
         for forecast in forecasts {
-            cellModels.append(DailyForecastCellViewModel(minTemperatureDescription: "\(forecast.minTemperature)°", maxTemperatureDescription: "\(forecast.maxTemperature)°", dateDescription: dateManager.dayWithTime(utc: forecast.dateISO) ?? "Unknown", imageLoader: weatherIconProvider, weatherIconName: forecast.weatherConditionIconName))
+            cellModels.append(DailyForecastCellViewModel(minTemperatureDescription: "\(forecast.minTemperature)°", maxTemperatureDescription: "\(forecast.maxTemperature)°", dateDescription: dateManager.dayWithTime(utc: forecast.dateISO), imageLoader: weatherIconProvider, weatherIconName: forecast.weatherConditionIconName))
         }
 
         cellsData[.dailyForecast] = cellModels
