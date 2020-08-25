@@ -17,27 +17,26 @@ class RecentLocationsViewModel {
     
     var locationModels = [LocationWeatherData]()
     lazy var cellsToReloadObservable: Observable<[IndexPath]> = {
-        return cellsToReloadRelay.skip(1).asObservable()
+        return cellsToReloadRelay.compactMap { $0 }
     }()
     lazy var cellsToInsertObservable: Observable<[IndexPath]> = {
-        return cellsToInsertRelay.skip(1).asObservable()
+        return cellsToInsertRelay.compactMap { $0 }
     }()
     lazy var dataLoadingError: Observable<String> = {
         return dataLoadingErrorRelay.skip(1).compactMap { $0 }.debounce(.seconds(5), scheduler: MainScheduler.asyncInstance)
     }()
     
-    private let cellsToReloadRelay = BehaviorRelay<[IndexPath]>(value: [])
-    private let cellsToInsertRelay = BehaviorRelay<[IndexPath]>(value: [])
+    private let cellsToReloadRelay = BehaviorRelay<[IndexPath]?>(value: nil)
+    private let cellsToInsertRelay = BehaviorRelay<[IndexPath]?>(value: nil)
     private let dataLoadingErrorRelay = BehaviorRelay<String?>(value: nil)
     
-    var onLocationAdd: ((IndexPath) -> Void)?
     init(recentCitiesProvider: RecentlyViewedCitiesProvider, weatherProvider: WeatherAPIClient, iconProvider: WeatherIconProvider) {
         self.recentCitiesProvider = recentCitiesProvider
         self.weatherProvider = weatherProvider
         self.iconProvider = iconProvider
         
         recentCitiesProvider.loadRecentlyViewed { [weak self] (locations: [LocationWeatherData]) in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 self?.locationModels = locations
                 var indexesToReload = [IndexPath]()
                 for i in 0..<locations.count {
@@ -85,8 +84,6 @@ class RecentLocationsViewModel {
                     self?.cellsToReloadRelay.accept([IndexPath(row: storedLocationIndex, section: 0)])
                 }
             }
-            
-            
         }
     }
 }
@@ -99,6 +96,7 @@ extension RecentLocationsViewModel: AddLocationDelegate {
     func added(location: LocationWeatherData) {
         recentCitiesProvider.storeAsRecentlyViewed(location: location)
         locationModels.append(location)
+        loadWeatherIfNeeded(for: location)
         cellsToInsertRelay.accept([IndexPath(row: locationModels.count - 1, section: 0)])
     }
 }

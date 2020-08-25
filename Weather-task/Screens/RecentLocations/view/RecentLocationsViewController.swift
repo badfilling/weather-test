@@ -40,9 +40,6 @@ class RecentLocationsViewController: UIViewController {
         DispatchQueue.main.async {
             self.setupTableRx()
         }
-        viewModel.onLocationAdd = { [weak self] indexPath in
-            self?.locationsTable.insertRows(at: [indexPath], with: .automatic)
-        }
     }
     
     func setupViews() {
