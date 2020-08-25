@@ -110,7 +110,6 @@ extension RecentLocationsViewController: UITableViewDataSource, UITableViewDeleg
         let model = viewModel.getModel(for: indexPath)
         let cell = tableView.dequeueReusableCell(withIdentifier: RecentLocationTableCell.reuseIdentifier) as! RecentLocationTableCell
         cell.setup(with: model)
-        print("dequeue is called")
         return cell
     }
     

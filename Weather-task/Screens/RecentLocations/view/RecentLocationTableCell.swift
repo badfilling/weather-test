@@ -29,7 +29,6 @@ class RecentLocationTableCell: UITableViewCell {
     
     let weatherIcon: UIImageView = {
         let view = UIImageView()
-//        view.backgroundColor = .white
         view.contentMode = .scaleToFill
         return view
     }()

@@ -47,15 +47,5 @@ class ForecastSectionHeaderView: UITableViewHeaderFooterView {
             make.top.equalToSuperview().offset(8).priority(999)
             make.bottom.equalToSuperview().offset(-20).priority(999)
         }
-        
-        
-//        contentView.addSubview(separatorLine)
-//        separatorLine.snp.makeConstraints { make in
-//            make.top.equalTo(titleLabel.snp.bottom).offset(4).priority(999)
-//            make.leading.equalTo(titleLabel.snp.leading).priority(999)
-//            make.bottom.equalToSuperview().priority(999)
-//            make.height.equalTo(1).priority(999)
-//            make.trailing.equalToSuperview().offset(-16).priority(999)
-//        }
     }
 }

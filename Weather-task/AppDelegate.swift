@@ -10,19 +10,23 @@ import UIKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    
     var window: UIWindow?
-
-
+    
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
         window = UIWindow()
         
         let recentCitiesProvider = UserDefaultsRecentlyViewedCitiesProvider()
-//        let weatherProvider = NetworkWeatherAPIClient()
-        let weatherProvider = FakeWeatherAPIClient()
-        let iconProvider = NetworkWeatherIconProvider(scale: Int(UIScreen.main.scale))
+        var weatherProvider: WeatherAPIClient!
+        if (ProcessInfo.processInfo.environment["ENV"] ?? "") == "DEV" {
+            weatherProvider = FakeWeatherAPIClient()
+        } else {
+            weatherProvider = NetworkWeatherAPIClient()
+        }
+        let iconProvider = NetworkWeatherIconProvider()
         let citiesVM = RecentLocationsViewModel(recentCitiesProvider: recentCitiesProvider, weatherProvider: weatherProvider, iconProvider: iconProvider)
         let cityProvider = FileCityProvider()
         let citiesVC = RecentLocationsViewController(viewModel: citiesVM, cityProvider: cityProvider)

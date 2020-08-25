@@ -68,7 +68,6 @@ class RecentLocationsViewModel {
         weatherProvider.loadCurrentWeather(latitude: location.cityCoordinates.latitude, longitude: location.cityCoordinates.longitude) { [weak self] result in
             switch result {
             case .failure(_):
-                // mk smth with error
                 self?.dataLoadingErrorRelay.accept("Problem with loading forecast")
             case .success(let currentWeather):
                 var updatedLocation = location
