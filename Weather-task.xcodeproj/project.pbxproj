@@ -62,6 +62,7 @@
 		DFB9DE3524F4F2E000CF67C1 /* testCities.json in Resources */ = {isa = PBXBuildFile; fileRef = DFB9DE3424F4F2E000CF67C1 /* testCities.json */; };
 		DFF6D6CC24F4FA1F008785B9 /* CityDataSourceImplTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF6D6CB24F4FA1F008785B9 /* CityDataSourceImplTests.swift */; };
 		DFF6D6D024F4FEB9008785B9 /* CityProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF6D6CF24F4FEB9008785B9 /* CityProviderMock.swift */; };
+		DFF6D6D224F4FF66008785B9 /* UserDefaultRecentlyViewedCitiesProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF6D6D124F4FF66008785B9 /* UserDefaultRecentlyViewedCitiesProviderTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -134,6 +135,7 @@
 		DFB9DE3424F4F2E000CF67C1 /* testCities.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = testCities.json; sourceTree = "<group>"; };
 		DFF6D6CB24F4FA1F008785B9 /* CityDataSourceImplTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityDataSourceImplTests.swift; sourceTree = "<group>"; };
 		DFF6D6CF24F4FEB9008785B9 /* CityProviderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityProviderMock.swift; sourceTree = "<group>"; };
+		DFF6D6D124F4FF66008785B9 /* UserDefaultRecentlyViewedCitiesProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultRecentlyViewedCitiesProviderTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -402,6 +404,7 @@
 				DFF6D6CB24F4FA1F008785B9 /* CityDataSourceImplTests.swift */,
 				DFB9DE3124F4F1B900CF67C1 /* FileCityProviderTests.swift */,
 				DFF6D6CF24F4FEB9008785B9 /* CityProviderMock.swift */,
+				DFF6D6D124F4FF66008785B9 /* UserDefaultRecentlyViewedCitiesProviderTests.swift */,
 			);
 			path = ServicesTests;
 			sourceTree = "<group>";
@@ -591,6 +594,7 @@
 			files = (
 				DFF6D6D024F4FEB9008785B9 /* CityProviderMock.swift in Sources */,
 				DFB9DE3224F4F1B900CF67C1 /* FileCityProviderTests.swift in Sources */,
+				DFF6D6D224F4FF66008785B9 /* UserDefaultRecentlyViewedCitiesProviderTests.swift in Sources */,
 				DFF6D6CC24F4FA1F008785B9 /* CityDataSourceImplTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
