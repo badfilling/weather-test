@@ -16,15 +16,6 @@ struct LocationWeatherData: Codable {
     let countryCode: String?
     var currentWeather: CurrentWeather?
     var forecastTimestamp: Double?
-    
-//    var descrtiption: String {
-//        let name = cityName ?? "Loading..."
-//        var countryDescription = ""
-//        if let countryCode = countryCode {
-//            countryDescription = ", \(countryCode)"
-//        }
-//        return name.appending(countryDescription)
-//    }
 }
 
 extension LocationWeatherData {

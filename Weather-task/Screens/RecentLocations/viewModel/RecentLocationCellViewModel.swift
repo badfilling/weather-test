@@ -15,15 +15,7 @@ struct RecentLocationCellViewModel {
     
     private let imageLoader: WeatherIconProvider
     private let weatherIconName: String?
-    
-    init(title: String, timestamp: String?, temperature: String, imageLoader: WeatherIconProvider, weatherIconName: String?) {
-        self.title = title
-        self.timestamp = timestamp
-        self.temperature = temperature
-        self.imageLoader = imageLoader
-        self.weatherIconName = weatherIconName
-    }
-    
+        
     init(from location: LocationWeatherData, imageLoader: WeatherIconProvider) {
         let temperature = location.currentWeather?.temperature == nil ? "" : "\(Int(location.currentWeather!.temperature))°"
         var timestamp = ""
