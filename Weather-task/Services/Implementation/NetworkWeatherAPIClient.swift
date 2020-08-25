@@ -16,7 +16,10 @@ class NetworkWeatherAPIClient: WeatherAPIClient {
     private let basicURL = "http://api.openweathermap.org/data/2.5/"
     private let apiKey = "0f4ccd5a0002cfb986940c83d13eb325"
     
-    let session = URLSession.shared
+    let session: URLSession
+    init(session: URLSession = URLSession.shared) {
+        self.session = session
+    }
     
     @discardableResult
     func loadForecast(latitude: Double, longitude: Double, completion: @escaping (Result<[WeatherForecast], Error>) -> Void) -> URLSessionDataTask? {
