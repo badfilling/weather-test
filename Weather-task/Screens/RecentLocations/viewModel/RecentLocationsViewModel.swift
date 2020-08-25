@@ -51,7 +51,8 @@ class RecentLocationsViewModel {
     }
     
     func deleteLocation(at index: Int) {
-        locationModels.remove(at: index)
+        let location = locationModels.remove(at: index)
+        recentCitiesProvider.removeFromRecentlyViewed(location: location)
     }
     
     private func loadWeatherIfNeeded(for location: LocationWeatherData) {

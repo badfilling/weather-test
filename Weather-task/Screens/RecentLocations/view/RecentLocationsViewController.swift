@@ -114,8 +114,9 @@ extension RecentLocationsViewController: UITableViewDataSource, UITableViewDeleg
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let detailsVM = LocationWeatherViewModel(location: viewModel.locationModels[indexPath.row], weatherProvider: viewModel.weatherProvider, weatherIconProvider: viewModel.iconProvider)
+        let detailsVM = LocationWeatherViewModel(location: viewModel.locationModels[indexPath.row], weatherProvider: viewModel.weatherProvider, weatherIconProvider: viewModel.iconProvider, dateManager: ForecastDateManager())
         let detailsVC = LocationWeatherViewController(viewModel: detailsVM)
+        tableView.deselectRow(at: indexPath, animated: true)
         show(detailsVC, sender: self)
     }
     

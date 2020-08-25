@@ -9,7 +9,7 @@
 import Foundation
 
 struct LocationWeatherData: Codable {
-    let uuid = UUID()
+    let uuid: UUID
     let cityId: Int?
     let cityName: String?
     let cityCoordinates: Coordinates

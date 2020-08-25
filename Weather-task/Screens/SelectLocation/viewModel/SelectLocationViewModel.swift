@@ -53,7 +53,7 @@ class SelectLocationViewModelImpl: SelectLocationViewModel {
     
     func didSelectCity(at indexPath: IndexPath) {
         let city = cities[indexPath.row]
-        let location = LocationWeatherData(cityId: city.id, cityName: city.name, cityCoordinates: city.coordinates, countryCode: city.countryCode, currentWeather: nil)
+        let location = LocationWeatherData(uuid: UUID(), cityId: city.id, cityName: city.name, cityCoordinates: city.coordinates, countryCode: city.countryCode, currentWeather: nil)
         addLocationDelegate?.added(location: location)
     }
 }
