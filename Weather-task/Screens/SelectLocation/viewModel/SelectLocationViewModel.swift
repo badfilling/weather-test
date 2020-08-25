@@ -11,13 +11,7 @@ import UIKit
 import RxRelay
 import RxSwift
 
-protocol SelectLocationViewModel {
-    func searchTextProvided(query: String)
-    func didSelectCity(at indexPath: IndexPath)
-    var cellModelsObservable: Observable<[SelectLocationCellViewModel]> { get }
-}
-
-class SelectLocationViewModelImpl: SelectLocationViewModel {
+class SelectLocationViewModel {
     lazy var cellModelsObservable: Observable<[SelectLocationCellViewModel]> = {
         return cellModelsRelay.asObservable()
     }()
@@ -56,7 +50,7 @@ class SelectLocationViewModelImpl: SelectLocationViewModel {
     }
     
     func didSelectCity(at indexPath: IndexPath) {
-        let city = cities[indexPath.row]
+        guard let city = cities[safeIndex: indexPath.row] else { return }
         let location = LocationWeatherData(uuid: UUID(), cityId: city.id, cityName: city.name, cityCoordinates: city.coordinates, countryCode: city.countryCode, currentWeather: nil)
         addLocationDelegate?.added(location: location)
     }

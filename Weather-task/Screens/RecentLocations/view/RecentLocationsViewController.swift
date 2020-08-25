@@ -91,7 +91,7 @@ class RecentLocationsViewController: UIViewController {
     
     @objc func addLocationClicked() {
         let cityDataSource = CityDataSourceImpl(cityProvider: cityProvider)
-        let selectLocationVM = SelectLocationViewModelImpl(dataSource: cityDataSource)
+        let selectLocationVM = SelectLocationViewModel(dataSource: cityDataSource)
         selectLocationVM.addLocationDelegate = viewModel
         let citiesVC = SelectLocationViewController(viewModel: selectLocationVM)
         self.show(citiesVC, sender: self)
