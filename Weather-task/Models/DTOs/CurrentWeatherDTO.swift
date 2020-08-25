@@ -27,6 +27,8 @@ struct CurrentWeatherDTO: Decodable {
 
 struct CurrentWeatherMainDTO: Decodable {
     let temperature: Double?
+    let maxTemperature: Double?
+    let minTemperature: Double?
     let temperatureFeelsLike: Double?
     let pressure: Double?
     let humidity: Double?
@@ -34,6 +36,8 @@ struct CurrentWeatherMainDTO: Decodable {
     enum CodingKeys: String, CodingKey {
         case temperature = "temp"
         case temperatureFeelsLike = "feels_like"
+        case maxTemperature = "temp_max"
+        case minTemperature = "temp_min"
         case pressure
         case humidity
     }

@@ -10,6 +10,8 @@ import Foundation
 
 struct WeatherForecast {
     let temperature: Int
+    let maxTemperature: Int
+    let minTemperature: Int
     let dateISO: String
     let weatherConditionIconName: String?
 }

@@ -27,7 +27,9 @@ struct DetailForecastDataDTO: Decodable {
 extension DetailForecastDataDTO {
     func convert() throws -> WeatherForecast {
         guard let temperature = main?.temperature,
+            let maxTemperature = main?.maxTemperature,
+            let minTemperature = main?.minTemperature,
             let dateISO = forecastDate else { throw NetworkError.dataCorrupted }
-        return WeatherForecast(temperature: Int(temperature), dateISO: dateISO, weatherConditionIconName: weather?[0].icon)
+        return WeatherForecast(temperature: Int(temperature), maxTemperature: Int(maxTemperature), minTemperature: Int(minTemperature), dateISO: dateISO, weatherConditionIconName: weather?[0].icon)
     }
 }
