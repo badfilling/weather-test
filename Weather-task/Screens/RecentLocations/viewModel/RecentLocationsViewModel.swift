@@ -16,12 +16,18 @@ class RecentLocationsViewModel {
     let iconProvider: WeatherIconProvider
     
     var locationModels = [LocationWeatherData]()
-    let cellsToReload = BehaviorRelay<[IndexPath]>(value: [])
-    let cellsToInsert = BehaviorRelay<[IndexPath]>(value: [])
+    lazy var cellsToReloadObservable: Observable<[IndexPath]> = {
+        return cellsToReloadRelay.skip(1).asObservable()
+    }()
+    lazy var cellsToInsertObservable: Observable<[IndexPath]> = {
+        return cellsToInsertRelay.skip(1).asObservable()
+    }()
     lazy var dataLoadingError: Observable<String> = {
         return dataLoadingErrorRelay.skip(1).compactMap { $0 }.debounce(.seconds(5), scheduler: MainScheduler.asyncInstance)
     }()
     
+    private let cellsToReloadRelay = BehaviorRelay<[IndexPath]>(value: [])
+    private let cellsToInsertRelay = BehaviorRelay<[IndexPath]>(value: [])
     private let dataLoadingErrorRelay = BehaviorRelay<String?>(value: nil)
     
     var onLocationAdd: ((IndexPath) -> Void)?
@@ -37,7 +43,7 @@ class RecentLocationsViewModel {
                 for i in 0..<locations.count {
                     indexesToReload.append(IndexPath(row: i, section: 0))
                 }
-                self?.cellsToInsert.accept(indexesToReload)
+                self?.cellsToInsertRelay.accept(indexesToReload)
             }
             
         }
@@ -76,7 +82,7 @@ class RecentLocationsViewModel {
                 updatedLocation.forecastTimestamp = Date().timeIntervalSince1970
                 if let storedLocationIndex = self?.locationModels.firstIndex(where: { $0 == updatedLocation }) {
                     self?.locationModels[storedLocationIndex] = updatedLocation
-                    self?.cellsToReload.accept([IndexPath(row: storedLocationIndex, section: 0)])
+                    self?.cellsToReloadRelay.accept([IndexPath(row: storedLocationIndex, section: 0)])
                 }
             }
             
@@ -93,6 +99,6 @@ extension RecentLocationsViewModel: AddLocationDelegate {
     func added(location: LocationWeatherData) {
         recentCitiesProvider.storeAsRecentlyViewed(location: location)
         locationModels.append(location)
-        cellsToInsert.accept([IndexPath(row: locationModels.count - 1, section: 0)])
+        cellsToInsertRelay.accept([IndexPath(row: locationModels.count - 1, section: 0)])
     }
 }

@@ -63,7 +63,7 @@ class SelectLocationViewController: UIViewController {
     
     func setupTableRx() {
         citiesTable.register(UITableViewCell.self, forCellReuseIdentifier: "cityListCell")
-        viewModel.cellModels
+        viewModel.cellModelsObservable
             .bind(to: citiesTable.rx.items(cellIdentifier: "cityListCell", cellType: UITableViewCell.self)) { (row, element, cell) in
                 cell.textLabel?.attributedText = element.title
         }.disposed(by: disposeBag)

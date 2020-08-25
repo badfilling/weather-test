@@ -57,7 +57,7 @@ class RecentLocationsViewController: UIViewController {
     }
     
     func setupTableRx() {
-        viewModel.cellsToInsert
+        viewModel.cellsToInsertObservable
             .observeOn(MainScheduler.asyncInstance)
             .bind { [weak self] indexes in
                 if indexes.isEmpty { return }
@@ -65,7 +65,7 @@ class RecentLocationsViewController: UIViewController {
                 self?.locationsTable.insertRows(at: indexes, with: .automatic)
         }.disposed(by: disposeBag)
         
-        viewModel.cellsToReload
+        viewModel.cellsToReloadObservable
             .observeOn(MainScheduler.asyncInstance)
             .bind { [weak self] indexes in
                 if indexes.isEmpty { return }

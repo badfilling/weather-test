@@ -9,15 +9,19 @@
 import Foundation
 import UIKit
 import RxRelay
+import RxSwift
 
 protocol SelectLocationViewModel {
     func searchTextProvided(query: String)
     func didSelectCity(at indexPath: IndexPath)
-    var cellModels: BehaviorRelay<[SelectLocationCellViewModel]> { get }
+    var cellModelsObservable: Observable<[SelectLocationCellViewModel]> { get }
 }
 
 class SelectLocationViewModelImpl: SelectLocationViewModel {
-    let cellModels: BehaviorRelay<[SelectLocationCellViewModel]>
+    lazy var cellModelsObservable: Observable<[SelectLocationCellViewModel]> = {
+        return cellModelsRelay.asObservable()
+    }()
+    private let cellModelsRelay: BehaviorRelay<[SelectLocationCellViewModel]>
     private let dataSource: CityDataSource
     private var lastSearchQuery: String?
     private var cities = [CityDTO]()
@@ -25,7 +29,7 @@ class SelectLocationViewModelImpl: SelectLocationViewModel {
     
     init(dataSource: CityDataSource) {
         self.dataSource = dataSource
-        cellModels = BehaviorRelay(value: [])
+        cellModelsRelay = BehaviorRelay(value: [])
     }
     
     func searchTextProvided(query: String) {
@@ -42,7 +46,7 @@ class SelectLocationViewModelImpl: SelectLocationViewModel {
                     
                     cellModels.append(SelectLocationCellViewModel(title: attributedString))
                 }
-                self?.cellModels.accept(cellModels)
+                self?.cellModelsRelay.accept(cellModels)
                 self?.cities = cities
             case .failure(_):
                 break
