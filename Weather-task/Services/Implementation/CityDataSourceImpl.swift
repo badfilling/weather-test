@@ -48,17 +48,19 @@ class CityDataSourceImpl: CityDataSource {
         
         let foldedQuery = query.prepareForSearch()
         if let previousFiltering = self.previousFiltering, query.contains(previousFiltering.0) {
-            let filtered = previousFiltering.1.filter {
-                $0.name.prepareForSearch().hasPrefix(foldedQuery)
-            }
+            let filtered = performFilter(for: foldedQuery, data: previousFiltering.1)
             self.previousFiltering = (query, filtered)
             return filtered
         }
         
-        let filtered = cities.filter {
-            $0.name.prepareForSearch().hasPrefix(foldedQuery)
-        }
+        let filtered = performFilter(for: foldedQuery, data: cities)
         previousFiltering = (query, filtered)
         return filtered
+    }
+    
+    private func performFilter(for query: String, data: [CityDTO]) -> [CityDTO] {
+        return data.filter {
+            $0.name.prepareForSearch().hasPrefix(query)
+        }
     }
 }
