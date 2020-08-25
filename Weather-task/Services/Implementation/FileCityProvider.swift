@@ -19,6 +19,7 @@ class FileCityProvider: CityProvider {
     init(bundle: Bundle, resourceName: String) {
         self.bundle = bundle
         self.resourceName = resourceName
+        loadCities() { _ in }
     }
     
     func loadCities(completion: @escaping CityLoadingCompletionHandler) {
