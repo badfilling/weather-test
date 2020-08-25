@@ -40,6 +40,7 @@ class LocationWeatherViewController: UIViewController {
     override func viewDidLoad() {
         setupViews()
         bindViewsRx()
+        viewModel.reloadData()
     }
     
     func setupViews() {

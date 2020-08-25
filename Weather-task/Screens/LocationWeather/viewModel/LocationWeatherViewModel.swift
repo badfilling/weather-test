@@ -12,7 +12,7 @@ import RxSwift
 import RxRelay
 
 class LocationWeatherViewModel {
-    private var location: LocationWeatherData
+    var location: LocationWeatherData
     private let weatherProvider: WeatherAPIClient
     private let weatherIconProvider: WeatherIconProvider
     private let dataLoadingErrorRelay = BehaviorRelay<String?>(value: nil)
@@ -39,6 +39,9 @@ class LocationWeatherViewModel {
         self.weatherProvider = weatherProvider
         self.weatherIconProvider = weatherIconProvider
         self.dateManager = dateManager
+    }
+    
+    func reloadData() {
         updatePrimaryData()
         updateDetailParameters()
         
@@ -139,11 +142,11 @@ class LocationWeatherViewModel {
     
     private func updateFutureDays(with forecasts: [WeatherForecast]) {
         var cellModels = [DailyForecastCellViewModel]()
-
+        
         for forecast in forecasts {
             cellModels.append(DailyForecastCellViewModel(minTemperatureDescription: "\(forecast.minTemperature)°", maxTemperatureDescription: "\(forecast.maxTemperature)°", dateDescription: dateManager.dayWithTime(utc: forecast.dateISO), imageLoader: weatherIconProvider, weatherIconName: forecast.weatherConditionIconName))
         }
-
+        
         cellsData[.dailyForecast] = cellModels
         tableReloadRelay.accept(.dailyForecast)
     }

@@ -28,10 +28,12 @@ class FileCityProviderTests: XCTestCase {
         fileProvider.loadCities { result in
             switch result {
             case .failure(_):
-                break
+                XCTFail()
             case .success(let dtos):
                 if dtos.count == 2 {
                     exp.fulfill()
+                } else {
+                    XCTFail()
                 }
             }
         }

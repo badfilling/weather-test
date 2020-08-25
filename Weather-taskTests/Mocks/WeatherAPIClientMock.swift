@@ -14,6 +14,7 @@ class WeatherAPIClientMock: WeatherAPIClient {
     var forecastsToReturn: [WeatherForecast]? = nil
     var currentWeatherLoadedtimes = 0
     
+    var forecastLoadedTimes = 0
     func loadCurrentWeather(latitude: Double, longitude: Double, completion: @escaping (Result<CurrentWeather, Error>) -> Void) -> URLSessionDataTask? {
         currentWeatherLoadedtimes += 1
         if currentWeatherToReturn != nil {
@@ -23,6 +24,10 @@ class WeatherAPIClientMock: WeatherAPIClient {
     }
     
     func loadForecast(latitude: Double, longitude: Double, completion: @escaping (Result<[WeatherForecast], Error>) -> Void) -> URLSessionDataTask? {
+        if forecastsToReturn != nil {
+            completion(.success(forecastsToReturn!))
+        }
+        forecastLoadedTimes += 1
         return nil
     }
     

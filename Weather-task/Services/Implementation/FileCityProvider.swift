@@ -12,7 +12,7 @@ class FileCityProvider: CityProvider {
     private var loadedCities = [CityDTO]()
     private var loadingError: Error?
     private var loadingDispatchTask: DispatchWorkItem?
-    private let providerDispatchQueue = DispatchQueue(label: "fileCityProvider", qos: .utility)
+    private let providerDispatchQueue = DispatchQueue(label: "fileCityProvider", qos: .userInitiated)
     private let resourceType = "json"
     private let bundle: Bundle
     private let resourceName: String

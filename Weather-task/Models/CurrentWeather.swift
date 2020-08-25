@@ -20,3 +20,7 @@ struct CurrentWeather: Codable {
     let timezoneOffset: Int
     let cityName: String?
 }
+
+extension CurrentWeather: Equatable {
+    
+}
