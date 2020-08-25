@@ -35,7 +35,7 @@ class FileCityProviderTests: XCTestCase {
                 }
             }
         }
-        wait(for: [exp], timeout: 0.1)
+        wait(for: [exp], timeout: 0.3)
     }
     
     func testConsequentLoadingsProcessed() {

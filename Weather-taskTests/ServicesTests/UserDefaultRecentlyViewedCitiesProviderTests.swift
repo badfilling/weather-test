@@ -19,6 +19,7 @@ class UserDefaultRecentlyViewedCitiesProviderTests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
+        userDefaults.removePersistentDomain(forName: #file)
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
     
