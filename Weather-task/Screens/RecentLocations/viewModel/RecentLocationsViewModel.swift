@@ -25,6 +25,7 @@ class RecentLocationsViewModel {
     let recentCitiesProvider: RecentlyViewedCitiesProvider
     let iconProvider: WeatherIconProvider
     let locationService: LocationService
+    let cityProvider: CityProvider
     
     var locationModels = [LocationWeatherData]()
     
@@ -43,11 +44,12 @@ class RecentLocationsViewModel {
     private let nextScreenSubject = PublishSubject<RecentLocationNextScreen>()
     private let dataLoadingErrorSubject = PublishSubject<String>()
     
-    init(recentCitiesProvider: RecentlyViewedCitiesProvider, weatherProvider: WeatherAPIClient, iconProvider: WeatherIconProvider, locationService: LocationService) {
+    init(recentCitiesProvider: RecentlyViewedCitiesProvider, weatherProvider: WeatherAPIClient, iconProvider: WeatherIconProvider, locationService: LocationService, cityProvider: CityProvider) {
         self.recentCitiesProvider = recentCitiesProvider
         self.weatherProvider = weatherProvider
         self.iconProvider = iconProvider
         self.locationService = locationService
+        self.cityProvider = cityProvider
         
         recentCitiesProvider.loadRecentlyViewed { [weak self] (locations: [LocationWeatherData]) in
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -86,6 +88,12 @@ class RecentLocationsViewModel {
     func didSelectLocation(at index: Int) {
         let detailsViewModel = prepareDetailsViewModel(for: locationModels[index])
         nextScreenSubject.onNext(.locationWeather(viewModel: detailsViewModel))
+    }
+    
+    func addLocationClicked() {
+        let viewModel = SelectLocationViewModel(dataSource: CityDataSourceImpl(cityProvider: cityProvider))
+        viewModel.addLocationDelegate = self
+        nextScreenSubject.onNext(.selectLocation(viewModel: viewModel))
     }
     
     private func prepareDetailsViewModel(for location: LocationWeatherData) -> LocationWeatherViewModel {

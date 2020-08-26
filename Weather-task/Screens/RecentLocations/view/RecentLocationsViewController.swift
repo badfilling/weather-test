@@ -20,12 +20,10 @@ class RecentLocationsViewController: UIViewController {
     }()
     
     let viewModel: RecentLocationsViewModel
-    let cityProvider: CityProvider
     let disposeBag = DisposeBag()
     
-    init(viewModel: RecentLocationsViewModel, cityProvider: CityProvider) {
+    init(viewModel: RecentLocationsViewModel) {
         self.viewModel = viewModel
-        self.cityProvider = cityProvider
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -115,11 +113,7 @@ class RecentLocationsViewController: UIViewController {
     }
     
     @objc func addLocationClicked() {
-        let cityDataSource = CityDataSourceImpl(cityProvider: cityProvider)
-        let selectLocationVM = SelectLocationViewModel(dataSource: cityDataSource)
-        selectLocationVM.addLocationDelegate = viewModel
-        let citiesVC = SelectLocationViewController(viewModel: selectLocationVM)
-        self.show(citiesVC, sender: self)
+        viewModel.addLocationClicked()
     }
 }
 
