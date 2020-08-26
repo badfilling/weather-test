@@ -8,10 +8,21 @@
 
 import Foundation
 
-enum NetworkError: Error {
+enum NetworkError: Error, LocalizedError {
     case dataCorrupted
     case invalidResponse
     case serverAccessProblem
+    
+    var errorDescription: String? {
+        switch self {
+        case .dataCorrupted:
+            return "Weather data from server is corrupted"
+        case .invalidResponse:
+            return "Invalid server response"
+        case .serverAccessProblem:
+            return "Could not access server. Check your connection"
+        }
+    }
 }
 
 protocol WeatherAPIClient {

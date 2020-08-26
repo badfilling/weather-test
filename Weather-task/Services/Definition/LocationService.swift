@@ -13,6 +13,13 @@ protocol LocationService {
     func getUserLocation(completion: @escaping (Result<CLLocation, Error>) -> Void)
 }
 
-enum LocationError: Error {
+enum LocationError: Error, LocalizedError {
     case accessDenied
+    
+    var errorDescription: String? {
+        switch self {
+        case .accessDenied:
+            return "Location access is disabled. Change it in app settings"
+        }
+    }
 }
