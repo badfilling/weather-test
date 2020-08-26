@@ -98,7 +98,7 @@ class RecentLocationsViewModel {
     }
     
     private func loadWeatherIfNeeded(for location: LocationWeatherData) {
-        guard let forecastTimestamp = location.forecastTimestamp else {//bug
+        guard let forecastTimestamp = location.forecastTimestamp else {
             loadWeather(for: location)
             return
         }
