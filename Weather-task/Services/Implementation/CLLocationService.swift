@@ -23,8 +23,10 @@ class CLLocationService: NSObject, LocationService {
         }
         locationRequest = completion
         switch CLLocationManager.authorizationStatus() {
-        case .notDetermined, .restricted, .denied:
+        case .notDetermined:
             locationManager.requestWhenInUseAuthorization()
+        case .restricted, .denied:
+            completion(.failure(LocationError.accessDenied))
         case .authorizedAlways, .authorizedWhenInUse:
             locationManager.requestLocation()
         @unknown default:

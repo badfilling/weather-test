@@ -15,11 +15,13 @@ protocol LocationService {
 
 enum LocationError: Error, LocalizedError {
     case accessDenied
-    
+    case incorrectData
     var errorDescription: String? {
         switch self {
         case .accessDenied:
             return "Location access is disabled. Change it in app settings"
+        case .incorrectData:
+            return "Input data format is incorrect"
         }
     }
 }
