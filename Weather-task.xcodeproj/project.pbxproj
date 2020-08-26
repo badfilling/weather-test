@@ -68,6 +68,8 @@
 		DFB9DE3524F4F2E000CF67C1 /* testCities.json in Resources */ = {isa = PBXBuildFile; fileRef = DFB9DE3424F4F2E000CF67C1 /* testCities.json */; };
 		DFD809EA24F6ACA900D1C28F /* CLLocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFD809E924F6ACA900D1C28F /* CLLocationService.swift */; };
 		DFED97B224F6B47D005583D0 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFED97B124F6B47D005583D0 /* LocationService.swift */; };
+		DFED97B424F6C7B2005583D0 /* LocationServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFED97B324F6C7B2005583D0 /* LocationServiceMock.swift */; };
+		DFED97B824F6E639005583D0 /* UIAlertController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFED97B724F6E639005583D0 /* UIAlertController+Extensions.swift */; };
 		DFF6D6CC24F4FA1F008785B9 /* CityDataSourceImplTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF6D6CB24F4FA1F008785B9 /* CityDataSourceImplTests.swift */; };
 		DFF6D6D024F4FEB9008785B9 /* CityProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF6D6CF24F4FEB9008785B9 /* CityProviderMock.swift */; };
 		DFF6D6D224F4FF66008785B9 /* UserDefaultRecentlyViewedCitiesProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF6D6D124F4FF66008785B9 /* UserDefaultRecentlyViewedCitiesProviderTests.swift */; };
@@ -163,6 +165,8 @@
 		DFB9DE3424F4F2E000CF67C1 /* testCities.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = testCities.json; sourceTree = "<group>"; };
 		DFD809E924F6ACA900D1C28F /* CLLocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLLocationService.swift; sourceTree = "<group>"; };
 		DFED97B124F6B47D005583D0 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		DFED97B324F6C7B2005583D0 /* LocationServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationServiceMock.swift; sourceTree = "<group>"; };
+		DFED97B724F6E639005583D0 /* UIAlertController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Extensions.swift"; sourceTree = "<group>"; };
 		DFF6D6CB24F4FA1F008785B9 /* CityDataSourceImplTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityDataSourceImplTests.swift; sourceTree = "<group>"; };
 		DFF6D6CF24F4FEB9008785B9 /* CityProviderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityProviderMock.swift; sourceTree = "<group>"; };
 		DFF6D6D124F4FF66008785B9 /* UserDefaultRecentlyViewedCitiesProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultRecentlyViewedCitiesProviderTests.swift; sourceTree = "<group>"; };
@@ -441,6 +445,7 @@
 				DF56067E24F40726001CA1FB /* URLSession+Extensions.swift */,
 				DF56068024F40732001CA1FB /* UITableViewCell+Extensions.swift */,
 				DF1E6A5F24F53AE7002F4DE5 /* Array+Extension.swift */,
+				DFED97B724F6E639005583D0 /* UIAlertController+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -509,6 +514,7 @@
 				DFF6D6EC24F50F04008785B9 /* WeatherAPIClientMock.swift */,
 				DF6956BE24F534CD00AE02FF /* CityDataSourceMock.swift */,
 				DF1E6A6124F53BC7002F4DE5 /* LocationDelegateMock.swift */,
+				DFED97B324F6C7B2005583D0 /* LocationServiceMock.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -670,6 +676,7 @@
 				DF56067824F406EB001CA1FB /* Coordinates.swift in Sources */,
 				DF294D9F24F0219C008200C2 /* AppDelegate.swift in Sources */,
 				DFF6D6D624F5089E008785B9 /* CurrentWeatherMainDTO.swift in Sources */,
+				DFED97B824F6E639005583D0 /* UIAlertController+Extensions.swift in Sources */,
 				DF9CFCB224F448190004C6FA /* HourlyForecastTableCell.swift in Sources */,
 				DF2D575C24F29D6B00C4CFC3 /* LocationWeatherViewController.swift in Sources */,
 				DFD809EA24F6ACA900D1C28F /* CLLocationService.swift in Sources */,
@@ -715,6 +722,7 @@
 				DFF6D6E524F50A04008785B9 /* WeatherIconProviderMock.swift in Sources */,
 				DF6956BF24F534CD00AE02FF /* CityDataSourceMock.swift in Sources */,
 				DFF6D6ED24F50F04008785B9 /* WeatherAPIClientMock.swift in Sources */,
+				DFED97B424F6C7B2005583D0 /* LocationServiceMock.swift in Sources */,
 				DFF6D6D424F50396008785B9 /* ForecastDateManagerTests.swift in Sources */,
 				DF6956BD24F5346400AE02FF /* SelectLocationViewModelTests.swift in Sources */,
 				DF1E6A6224F53BC7002F4DE5 /* LocationDelegateMock.swift in Sources */,

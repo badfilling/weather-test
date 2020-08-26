@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -27,9 +28,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             weatherProvider = NetworkWeatherAPIClient()
         }
         let iconProvider = NetworkWeatherIconProvider()
-        let citiesVM = RecentLocationsViewModel(recentCitiesProvider: recentCitiesProvider, weatherProvider: weatherProvider, iconProvider: iconProvider)
+        let locationService = CLLocationService(locationManager: CLLocationManager())
         let cityProvider = FileCityProvider(bundle: Bundle.main, resourceName: "city.list.min")
-        let citiesVC = RecentLocationsViewController(viewModel: citiesVM, cityProvider: cityProvider)
+        let citiesVM = RecentLocationsViewModel(recentCitiesProvider: recentCitiesProvider, weatherProvider: weatherProvider, iconProvider: iconProvider, locationService: locationService, cityProvider: cityProvider)
+        let citiesVC = RecentLocationsViewController(viewModel: citiesVM)
         let navigation = UINavigationController(rootViewController: citiesVC)
         window?.rootViewController = navigation
         
