@@ -71,6 +71,7 @@ class RecentLocationsViewController: UIViewController {
     func setupRxNavigation() {
         viewModel
             .nextScreenObservable
+            .observeOn(MainScheduler.asyncInstance)
             .subscribe(onNext: { [weak self] screenType in
                 var vc: UIViewController!
                 switch screenType {

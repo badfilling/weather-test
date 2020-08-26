@@ -30,7 +30,7 @@ class LocationWeatherViewModelTests: XCTestCase {
         let exp = expectation(description: "primary date updated")
         
         viewModel.tableReloadObservable
-            .filter { $0 == .primaryData }
+            .filter { $0.contains(.primaryData) }
             .subscribe(onNext: { _ in
                 exp.fulfill()
             }).disposed(by: disposeBag)
@@ -44,7 +44,7 @@ class LocationWeatherViewModelTests: XCTestCase {
         let exp = expectation(description: "primary date updated")
         viewModel = LocationWeatherViewModel(location: prepareLocation(currentWeather: prepareCurrentWeather()), weatherProvider: weatherProvider, weatherIconProvider: weatherIconProvider, dateManager: dateManager)
         viewModel.tableReloadObservable
-            .filter { $0 == .basicData }
+            .filter { $0.contains(.basicData) }
             .subscribe(onNext: { _ in
                 exp.fulfill()
             }).disposed(by: disposeBag)
@@ -109,12 +109,12 @@ class LocationWeatherViewModelTests: XCTestCase {
         let exp1 = expectation(description: "hourly forecast updated")
         let exp2 = expectation(description: "daily forecast updated")
         viewModel.tableReloadObservable
-            .filter { $0 == .dailyForecast || $0 == .hourlyForecast }
-            .subscribe(onNext: { section in
-                if section == .dailyForecast {
+            .filter { $0.contains(.dailyForecast) || $0.contains(.hourlyForecast) }
+            .subscribe(onNext: { sections in
+                if sections.contains(.dailyForecast) {
                     exp2.fulfill()
                 }
-                if section == .hourlyForecast {
+                if sections.contains(.hourlyForecast) {
                     exp1.fulfill()
                 }
             }).disposed(by: disposeBag)

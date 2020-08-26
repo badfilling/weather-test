@@ -58,8 +58,8 @@ class LocationWeatherViewController: UIViewController {
     func bindViewsRx() {
         viewModel.tableReloadObservable
             .observeOn(MainScheduler.asyncInstance)
-            .subscribe(onNext: { [weak self] section in
-                self?.tableView.reloadSections([section.rawValue], with: .automatic)
+            .subscribe(onNext: { [weak self] sections in
+                self?.tableView.reloadSections(IndexSet(sections.map { $0.rawValue }), with: .automatic)
             }).disposed(by: disposeBag)
         
         viewModel.dataLoadingErrorObservable

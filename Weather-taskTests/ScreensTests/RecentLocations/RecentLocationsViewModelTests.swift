@@ -45,10 +45,15 @@ class RecentLocationsViewModelTests: XCTestCase {
         recentCitiesProvider.storedCities = locations
         viewModel = RecentLocationsViewModel(recentCitiesProvider: recentCitiesProvider, weatherProvider: weatherProvider, iconProvider: iconProvider, locationService: locationService)
         
-        viewModel.cellsToInsertObservable
-            .subscribe(onNext: { indexes in
-                if indexes.count == locations.count {
-                    exp.fulfill()
+        viewModel.cellsToUpdateObservable
+            .subscribe(onNext: { update in
+                switch update {
+                case .insert(let indexes):
+                    if indexes.count == locations.count {
+                        exp.fulfill()
+                    }
+                default:
+                    break
                 }
             }).disposed(by: disposeBag)
         wait(for: [exp], timeout: 0.2)
@@ -65,10 +70,15 @@ class RecentLocationsViewModelTests: XCTestCase {
     func testLocationInsertedToTableWhenAdded() {
         let exp = expectation(description: "location added to table")
         
-        viewModel.cellsToInsertObservable
+        viewModel.cellsToUpdateObservable
         .skip(1)
-        .subscribe(onNext: { _ in
-            exp.fulfill()
+        .subscribe(onNext: { update in
+            switch update {
+            case .insert(_):
+                exp.fulfill()
+            default:
+                break
+            }
             }).disposed(by: disposeBag)
         
         viewModel.added(location: prepareLocation())
@@ -105,9 +115,14 @@ class RecentLocationsViewModelTests: XCTestCase {
         
         viewModel.added(location: location)
         
-        viewModel.cellsToReloadObservable
-        .subscribe(onNext: { _ in
-            exp.fulfill()
+        viewModel.cellsToUpdateObservable
+        .subscribe(onNext: { update in
+            switch update {
+            case .reload(_):
+                exp.fulfill()
+            default:
+                break
+            }
             }).disposed(by: disposeBag)
         
         wait(for: [exp], timeout: 0.1)

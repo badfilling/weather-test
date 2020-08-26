@@ -17,14 +17,14 @@ class LocationWeatherViewModel {
     private let weatherIconProvider: WeatherIconProvider
     private let dataLoadingErrorRelay = BehaviorRelay<String?>(value: nil)
     private let dateManager: ForecastDateManager
-    private lazy var tableReloadRelay: BehaviorRelay<WeatherForecastSection?> = {
-        return BehaviorRelay<WeatherForecastSection?>(value: nil)
+    private lazy var tableReloadRelay: BehaviorRelay<[WeatherForecastSection]?> = {
+        return BehaviorRelay<[WeatherForecastSection]?>(value: nil)
     }()
     
     lazy var dataLoadingErrorObservable: Observable<String> = {
         return dataLoadingErrorRelay.skip(1).compactMap { $0 }.debounce(.seconds(5), scheduler: MainScheduler.asyncInstance)
     }()
-    lazy var tableReloadObservable: Observable<WeatherForecastSection> = {
+    lazy var tableReloadObservable: Observable<[WeatherForecastSection]> = {
         return tableReloadRelay.compactMap { $0 }
     }()
     
@@ -106,6 +106,7 @@ class LocationWeatherViewModel {
                 }
                 self.updateTodayDetails(with: todayForecasts)
                 self.updateFutureDays(with: nextDaysForecasts)
+                self.tableReloadRelay.accept([.dailyForecast, .hourlyForecast])
             case .failure(_):
                 self.dataLoadingErrorRelay.accept("Problem with loading forecast for future days")
             }
@@ -115,7 +116,7 @@ class LocationWeatherViewModel {
     private func updatePrimaryData() {
         let primaryCellViewModel = BasicWeatherCellViewModel(temperatureDescription: createTemperatureDescription() ?? "Unknown", titleDescription: createTitle(), imageLoader: weatherIconProvider, weatherIconName: location.currentWeather?.weatherConditionIconName, temperatureLabelColor: getTemperatureColor())
         cellsData[.primaryData] = [primaryCellViewModel]
-        tableReloadRelay.accept(.primaryData)
+        tableReloadRelay.accept([.primaryData])
     }
     
     private func updateDetailParameters() {
@@ -128,7 +129,7 @@ class LocationWeatherViewModel {
             cellModels.append(CurrentForecastCellViewModel(titleDescription: "Wind", valueDescription: currentWeather.windSpeed == nil ? "-" : "\(currentWeather.windSpeed!) m/s"))
         }
         cellsData[.basicData] = cellModels
-        tableReloadRelay.accept(.basicData)
+        tableReloadRelay.accept([.basicData])
     }
     
     private func updateTodayDetails(with forecasts: [WeatherForecast]) {
@@ -137,7 +138,6 @@ class LocationWeatherViewModel {
             cellModels.append(HourlyForecastCellViewModel(temperatureDescription: "\(forecast.temperature)°", dateDescription: dateManager.hours(utc: forecast.dateISO), imageLoader: weatherIconProvider, weatherIconName: forecast.weatherConditionIconName))
         }
         cellsData[.hourlyForecast] = cellModels
-        tableReloadRelay.accept(.hourlyForecast)
     }
     
     private func updateFutureDays(with forecasts: [WeatherForecast]) {
@@ -146,8 +146,6 @@ class LocationWeatherViewModel {
         for forecast in forecasts {
             cellModels.append(DailyForecastCellViewModel(minTemperatureDescription: "\(forecast.minTemperature)°", maxTemperatureDescription: "\(forecast.maxTemperature)°", dateDescription: dateManager.dayWithTime(utc: forecast.dateISO), imageLoader: weatherIconProvider, weatherIconName: forecast.weatherConditionIconName))
         }
-        
         cellsData[.dailyForecast] = cellModels
-        tableReloadRelay.accept(.dailyForecast)
     }
 }
