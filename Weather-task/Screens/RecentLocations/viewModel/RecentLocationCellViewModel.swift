@@ -19,7 +19,7 @@ struct RecentLocationCellViewModel: WeatherIconImageSetService {
     init(from location: LocationWeatherData, imageLoader: WeatherIconProvider) {
         let temperature = location.currentWeather?.temperature == nil ? "" : "\(Int(location.currentWeather!.temperature))°"
         var timestamp = ""
-        if let forecastTimestamp = location.forecastTimestamp, let offset = location.currentWeather?.timezoneOffset {
+        if let offset = location.currentWeather?.timezoneOffset {
             let date = Date(timeIntervalSince1970: Date().timeIntervalSince1970 + Double(offset) - Double(TimeZone.current.secondsFromGMT()))
             timestamp = date.getTime()
         }
