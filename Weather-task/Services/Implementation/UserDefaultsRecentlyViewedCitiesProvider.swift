@@ -8,7 +8,7 @@
 
 import Foundation
 
-class UserDefaultsRecentlyViewedCitiesProvider: RecentlyViewedCitiesProvider {
+struct UserDefaultsRecentlyViewedCitiesProvider: RecentlyViewedCitiesProvider {
     
     private let userDefaults: UserDefaults
     private let recentlyViewedLocations = "recentlyViewedLocations"

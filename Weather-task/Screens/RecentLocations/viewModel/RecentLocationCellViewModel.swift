@@ -23,8 +23,9 @@ struct RecentLocationCellViewModel: WeatherIconImageSetService {
             let date = Date(timeIntervalSince1970: Date().timeIntervalSince1970 + Double(offset) - Double(TimeZone.current.secondsFromGMT()))
             timestamp = date.getTime()
         }
-        
-        title = location.cityName ?? ""
+        let cityNamePlaceholder = "lat: \(location.cityCoordinates.latitude), lon: \(location.cityCoordinates.longitude)"
+        let cityName = location.cityName ?? ""
+        title = cityName.isEmpty ? cityNamePlaceholder : cityName
         self.timestamp = timestamp
         self.temperature = temperature
         weatherIconName = location.currentWeather?.weatherConditionIconName

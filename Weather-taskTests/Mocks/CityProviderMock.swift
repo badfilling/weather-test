@@ -10,11 +10,13 @@ import Foundation
 @testable import Weather_task
 
 class CityProviderMock: CityProvider {
-    var cities = [CityDTO]()
+    var cities: [CityDTO]? = nil
     var error: Error? = nil
     func loadCities(completion: @escaping CityLoadingCompletionHandler) {
         if error == nil {
+            if let cities = cities {
             completion(.success(cities))
+            }
         } else {
             completion(.failure(error!))
         }

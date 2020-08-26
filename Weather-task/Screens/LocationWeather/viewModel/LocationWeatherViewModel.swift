@@ -50,9 +50,11 @@ class LocationWeatherViewModel {
     }
     
     private func createTitle() -> String {
+        let cityNamePlaceholder = "lat: \(location.cityCoordinates.latitude), lon: \(location.cityCoordinates.longitude)"
         let cityName = location.cityName ?? ""
+        let firstRow = cityName.isEmpty ? cityNamePlaceholder : cityName
         let weatherCondition = location.currentWeather?.weatherConditionDescription ?? ""
-        return "\(cityName)\n\(weatherCondition.capitalized)"
+        return "\(firstRow)\n\(weatherCondition.capitalized)"
     }
     
     private func createTemperatureDescription() -> String? {

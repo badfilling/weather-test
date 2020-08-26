@@ -21,11 +21,12 @@ enum TableCellUpdate {
 }
 
 class RecentLocationsViewModel {
-    let weatherProvider: WeatherAPIClient
-    let recentCitiesProvider: RecentlyViewedCitiesProvider
-    let iconProvider: WeatherIconProvider
-    let locationService: LocationService
-    let cityProvider: CityProvider
+    private let weatherProvider: WeatherAPIClient
+    private let recentCitiesProvider: RecentlyViewedCitiesProvider
+    private let iconProvider: WeatherIconProvider
+    private let locationService: LocationService
+    private let cityProvider: CityProvider
+    private let coordinatesInputValidator: LocationInputValidator
     
     var locationModels = [LocationWeatherData]()
     
@@ -44,12 +45,13 @@ class RecentLocationsViewModel {
     private let nextScreenSubject = PublishSubject<RecentLocationNextScreen>()
     private let errorMessageSubject = PublishSubject<String>()
     
-    init(recentCitiesProvider: RecentlyViewedCitiesProvider, weatherProvider: WeatherAPIClient, iconProvider: WeatherIconProvider, locationService: LocationService, cityProvider: CityProvider) {
+    init(recentCitiesProvider: RecentlyViewedCitiesProvider, weatherProvider: WeatherAPIClient, iconProvider: WeatherIconProvider, locationService: LocationService, cityProvider: CityProvider, coordinatesInputValidator: LocationInputValidator) {
         self.recentCitiesProvider = recentCitiesProvider
         self.weatherProvider = weatherProvider
         self.iconProvider = iconProvider
         self.locationService = locationService
         self.cityProvider = cityProvider
+        self.coordinatesInputValidator = coordinatesInputValidator
         
         recentCitiesProvider.loadRecentlyViewed { [weak self] (locations: [LocationWeatherData]) in
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -77,14 +79,12 @@ class RecentLocationsViewModel {
     }
     
     func customCoordinatesProvided(latitudeText: String?, longitudeText: String?) {
-        guard let latitudeText = latitudeText,
-            let longitudeText = longitudeText,
-            let latitude = Double(latitudeText.replacingOccurrences(of: ",", with: ".")),
-            let longitude = Double(longitudeText.replacingOccurrences(of: ",", with: ".")) else {
-                errorMessageSubject.onNext(LocationError.incorrectData.localizedDescription)
-                return
+        do {
+            let coordinates = try coordinatesInputValidator.convertToCoordinates(latitudeText: latitudeText, longitudeText: longitudeText)
+            added(coordinates: coordinates)
+        } catch {
+            errorMessageSubject.onNext(error.localizedDescription)
         }
-        addedCoordinates(latitude: latitude, longitude: longitude)
     }
     
     func didSelectLocation(at index: Int) {
@@ -93,7 +93,7 @@ class RecentLocationsViewModel {
     }
     
     func addLocationClicked() {
-        let viewModel = SelectLocationViewModel(dataSource: CityDataSourceImpl(cityProvider: cityProvider))
+        let viewModel = SelectLocationViewModel(dataSource: CityDataSourceImpl(cityProvider: cityProvider), coordinatesInputValidator: coordinatesInputValidator)
         viewModel.addLocationDelegate = self
         nextScreenSubject.onNext(.selectLocation(viewModel: viewModel))
     }
@@ -105,6 +105,7 @@ class RecentLocationsViewModel {
     func deleteLocation(at index: Int) {
         let location = locationModels.remove(at: index)
         recentCitiesProvider.removeFromRecentlyViewed(location: location)
+        cellsToUpdateRelay.accept(.delete(indexes: [IndexPath(row: locationModels.count, section: 0)]))
     }
     
     private func loadWeatherIfNeeded(for location: LocationWeatherData) {
@@ -137,7 +138,7 @@ class RecentLocationsViewModel {
 
 protocol AddLocationDelegate: class {
     func added(location: LocationWeatherData)
-    func addedCoordinates(latitude: Double, longitude: Double)
+    func added(coordinates: Coordinates)
     func addedUserLocation()
 }
 
@@ -147,7 +148,7 @@ extension RecentLocationsViewModel: AddLocationDelegate {
             switch result {
             case .success(let location):
                 print("got location: \(location)")
-                self?.addedCoordinates(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+                self?.added(coordinates: Coordinates(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude))
             case .failure(let error):
                 self?.errorMessageSubject.onNext(error.localizedDescription)
                 print("got error on location request: \(error.localizedDescription)")
@@ -162,8 +163,8 @@ extension RecentLocationsViewModel: AddLocationDelegate {
         loadWeatherIfNeeded(for: location)
     }
     
-    func addedCoordinates(latitude: Double, longitude: Double) {
-        weatherProvider.loadCurrentWeather(latitude: latitude, longitude: longitude) { [weak self] result in
+    func added(coordinates: Coordinates) {
+        weatherProvider.loadCurrentWeather(latitude: coordinates.latitude, longitude: coordinates.longitude) { [weak self] result in
             guard let `self` = self else { return }
             switch result {
             case .failure(let error):

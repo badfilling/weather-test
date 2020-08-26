@@ -15,10 +15,12 @@ class SelectLocationViewModelTests: XCTestCase {
     var viewModel: SelectLocationViewModel!
     var dataSource: CityDataSourceMock!
     var disposeBag: DisposeBag!
+    var inputValidator: LocationInputValidatorMock!
     override func setUpWithError() throws {
         disposeBag = DisposeBag()
         dataSource = CityDataSourceMock()
-        viewModel = SelectLocationViewModel(dataSource: dataSource)
+        inputValidator = LocationInputValidatorMock()
+        viewModel = SelectLocationViewModel(dataSource: dataSource, coordinatesInputValidator: inputValidator)
     }
     
     func testDataSourceCalledWhenQueryProvided() {

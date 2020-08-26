@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DailyForecastCellViewModel: AnyTableCellViewModel, WeatherIconImageSetService {
+struct DailyForecastCellViewModel: AnyTableCellViewModel, WeatherIconImageSetService {
     
     let minTemperatureDescription: String
     let maxTemperatureDescription: String

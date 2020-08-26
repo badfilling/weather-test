@@ -24,11 +24,11 @@ class FileCityProvider: CityProvider {
     
     func loadCities(completion: @escaping CityLoadingCompletionHandler) {
         guard loadingDispatchTask == nil else {
-            loadingDispatchTask?.notify(queue: providerDispatchQueue) {
-                if self.loadingError != nil {
-                    completion(.failure(self.loadingError!))
-                } else {
-                    completion(.success(self.loadedCities))
+            loadingDispatchTask?.notify(queue: providerDispatchQueue) { [weak self] in
+                if let error = self?.loadingError {
+                    completion(.failure(error))
+                } else if let cities = self?.loadedCities {
+                    completion(.success(cities))
                 }
             }
             return

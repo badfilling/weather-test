@@ -25,6 +25,7 @@ class CityDataSourceImplTests: XCTestCase {
 
     func testReturnsEmptyListWhenNoCities() {
         let exp = expectation(description: "success, empty return")
+        cityProvider.cities = []
         dataSource.getCities(query: "") { result in
             switch result {
             case .failure(_):

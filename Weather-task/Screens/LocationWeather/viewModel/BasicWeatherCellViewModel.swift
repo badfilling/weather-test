@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BasicWeatherCellViewModel: AnyTableCellViewModel, WeatherIconImageSetService {
+struct BasicWeatherCellViewModel: AnyTableCellViewModel, WeatherIconImageSetService {
     
     let temperatureDescription: String
     let titleDescription: String

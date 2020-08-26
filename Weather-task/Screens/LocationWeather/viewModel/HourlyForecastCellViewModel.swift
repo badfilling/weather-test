@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HourlyForecastCellViewModel: AnyTableCellViewModel, WeatherIconImageSetService {
+struct HourlyForecastCellViewModel: AnyTableCellViewModel, WeatherIconImageSetService {
     
     let temperatureDescription: String
     let dateDescription: String

@@ -17,12 +17,14 @@ class SelectLocationViewModel {
     }()
     private let cellModelsRelay: BehaviorRelay<[SelectLocationCellViewModel]>
     private let dataSource: CityDataSource
+    private let coordinatesInputValidator: LocationInputValidator
     private var lastSearchQuery: String?
     private var cities = [CityDTO]()
     weak var addLocationDelegate: AddLocationDelegate?
     
-    init(dataSource: CityDataSource) {
+    init(dataSource: CityDataSource, coordinatesInputValidator: LocationInputValidator) {
         self.dataSource = dataSource
+        self.coordinatesInputValidator = coordinatesInputValidator
         cellModelsRelay = BehaviorRelay(value: [])
     }
     
@@ -61,14 +63,14 @@ class SelectLocationViewModel {
     
     func customCoordinatesProvided(latitudeText: String?, longitudeText: String?) -> Single<Any> {
         return Single<Any>.create { [weak self] single in
-            if let latitudeText = latitudeText,
-                let longitudeText = longitudeText,
-                let latitude = Double(latitudeText.replacingOccurrences(of: ",", with: ".")),
-                let longitude = Double(longitudeText.replacingOccurrences(of: ",", with: ".")) {
-                self?.addLocationDelegate?.addedCoordinates(latitude: latitude, longitude: longitude)
-                single(.success(()))
-            } else {
-                single(.error(LocationError.incorrectData))
+            
+            do {
+                if let coordinates = try self?.coordinatesInputValidator.convertToCoordinates(latitudeText: latitudeText, longitudeText: longitudeText) {
+                    self?.addLocationDelegate?.added(coordinates: coordinates)
+                    single(.success(()))
+                }
+            } catch {
+                single(.error(error))
             }
             return Disposables.create()
         }

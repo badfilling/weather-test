@@ -8,7 +8,7 @@
 
 import Foundation
 
-class NetworkWeatherAPIClient: WeatherAPIClient {
+struct NetworkWeatherAPIClient: WeatherAPIClient {
     enum Endpoint: String {
         case currentWeather = "weather"
         case forecast = "forecast"

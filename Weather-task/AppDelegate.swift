@@ -30,7 +30,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let iconProvider = NetworkWeatherIconProvider()
         let locationService = CLLocationService(locationManager: CLLocationManager())
         let cityProvider = FileCityProvider(bundle: Bundle.main, resourceName: "city.list.min")
-        let citiesVM = RecentLocationsViewModel(recentCitiesProvider: recentCitiesProvider, weatherProvider: weatherProvider, iconProvider: iconProvider, locationService: locationService, cityProvider: cityProvider)
+        let coordinatesInputValidator = CoordinatesInputValidator()
+        let citiesVM = RecentLocationsViewModel(recentCitiesProvider: recentCitiesProvider, weatherProvider: weatherProvider, iconProvider: iconProvider, locationService: locationService, cityProvider: cityProvider, coordinatesInputValidator: coordinatesInputValidator)
         let citiesVC = RecentLocationsViewController(viewModel: citiesVM)
         let navigation = UINavigationController(rootViewController: citiesVC)
         window?.rootViewController = navigation

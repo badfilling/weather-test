@@ -19,14 +19,13 @@ class CityDataSourceImpl: CityDataSource {
     }
     
     func getCities(query: String, completion: @escaping CityLoadingCompletionHandler) {
-            dataSourceDispatchQueue.async {
+            dataSourceDispatchQueue.async { [weak self] in
+                guard let `self` = self else {
+                    completion(.failure(CityProviderError.unknownReason))
+                    return
+                }
                 if self.cachedCities.isEmpty {
-                    self.cityProvider.loadCities { [weak self] result in
-                        guard let `self` = self else {
-                            completion(.failure(CityProviderError.unknownReason))
-                            return
-                        }
-                        
+                    self.cityProvider.loadCities { result in
                         switch result {
                         case .failure(let error):
                             completion(.failure(error))

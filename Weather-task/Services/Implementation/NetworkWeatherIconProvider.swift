@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class NetworkWeatherIconProvider: WeatherIconProvider {
+struct NetworkWeatherIconProvider: WeatherIconProvider {
     private let cache = NSCache<NSString, NSData>()
     private let basicURL = "http://openweathermap.org/img/wn/"
     private let session: URLSession
@@ -30,12 +30,12 @@ class NetworkWeatherIconProvider: WeatherIconProvider {
         }
         
         let request = URLRequest(url: url)
-        let task = session.dataTask(with: request) { [weak self] result in
+        let task = session.dataTask(with: request) { result in
             switch result {
             case .failure(_):
                 completion(nil)
             case .success(let data):
-                self?.cache.setObject(data as NSData, forKey: iconName as NSString)
+                self.cache.setObject(data as NSData, forKey: iconName as NSString)
                 completion(data)
             }
         }

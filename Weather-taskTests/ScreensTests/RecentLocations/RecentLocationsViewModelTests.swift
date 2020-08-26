@@ -19,6 +19,7 @@ class RecentLocationsViewModelTests: XCTestCase {
     var iconProvider: WeatherIconProviderMock!
     var locationService: LocationServiceMock!
     var cityProvider: CityProviderMock!
+    var inputValidator: LocationInputValidatorMock!
     var disposeBag: DisposeBag!
     var scheduler: TestScheduler!
 
@@ -28,17 +29,18 @@ class RecentLocationsViewModelTests: XCTestCase {
         iconProvider = WeatherIconProviderMock()
         locationService = LocationServiceMock()
         cityProvider = CityProviderMock()
+        inputValidator = LocationInputValidatorMock()
         disposeBag = DisposeBag()
         scheduler = TestScheduler(initialClock: 0)
 
-        viewModel = RecentLocationsViewModel(recentCitiesProvider: recentCitiesProvider, weatherProvider: weatherProvider, iconProvider: iconProvider, locationService: locationService, cityProvider: cityProvider)
+        viewModel = RecentLocationsViewModel(recentCitiesProvider: recentCitiesProvider, weatherProvider: weatherProvider, iconProvider: iconProvider, locationService: locationService, cityProvider: cityProvider, coordinatesInputValidator: inputValidator)
     }
     
     func testRecentCitiesLoadSendsInsertEvent() {
         let locations = [prepareLocation(), prepareLocation()]
         let exp = expectation(description: "inserted cells event registered")
         recentCitiesProvider.storedCities = locations
-        viewModel = RecentLocationsViewModel(recentCitiesProvider: recentCitiesProvider, weatherProvider: weatherProvider, iconProvider: iconProvider, locationService: locationService, cityProvider: cityProvider)
+        viewModel = RecentLocationsViewModel(recentCitiesProvider: recentCitiesProvider, weatherProvider: weatherProvider, iconProvider: iconProvider, locationService: locationService, cityProvider: cityProvider, coordinatesInputValidator: inputValidator)
         
         viewModel.cellsToUpdateObservable
             .subscribe(onNext: { update in
@@ -132,7 +134,7 @@ class RecentLocationsViewModelTests: XCTestCase {
     
     func testWeatherIsLoadedWhenCoordinatesAdded() {
         let weatherProviderCalledTimes = weatherProvider.currentWeatherLoadedtimes
-        viewModel.addedCoordinates(latitude: 0, longitude: 0)
+        viewModel.added(coordinates: Coordinates(latitude: 0, longitude: 0))
         
         XCTAssertEqual(weatherProvider.currentWeatherLoadedtimes, weatherProviderCalledTimes + 1)
     }
@@ -148,7 +150,7 @@ class RecentLocationsViewModelTests: XCTestCase {
                 }
             }).disposed(by: disposeBag)
         
-        viewModel.addedCoordinates(latitude: 0, longitude: 0)
+        viewModel.added(coordinates: Coordinates(latitude: 0, longitude: 0))
         
         wait(for: [exp], timeout: 0.1)
     }
