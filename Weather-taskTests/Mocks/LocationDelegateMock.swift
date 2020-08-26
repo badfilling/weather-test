@@ -10,6 +10,10 @@ import Foundation
 @testable import Weather_task
 
 class LocationDelegateMock: AddLocationDelegate {
+    func addedCoordinates(latitude: Double, longitude: Double) {
+        
+    }
+    
     var calledTimes = 0
     func added(location: LocationWeatherData) {
         calledTimes += 1

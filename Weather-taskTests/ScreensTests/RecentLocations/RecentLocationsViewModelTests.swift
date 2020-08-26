@@ -17,17 +17,19 @@ class RecentLocationsViewModelTests: XCTestCase {
     var recentCitiesProvider: RecentlyViewedCitiesProviderMock!
     var weatherProvider: WeatherAPIClientMock!
     var iconProvider: WeatherIconProviderMock!
+    var locationService: LocationServiceMock!
     var disposeBag: DisposeBag!
     override func setUpWithError() throws {
         recentCitiesProvider = RecentlyViewedCitiesProviderMock()
         weatherProvider = WeatherAPIClientMock()
         iconProvider = WeatherIconProviderMock()
+        locationService = LocationServiceMock()
         disposeBag = DisposeBag()
-        viewModel = RecentLocationsViewModel(recentCitiesProvider: recentCitiesProvider, weatherProvider: weatherProvider, iconProvider: iconProvider)
+        viewModel = RecentLocationsViewModel(recentCitiesProvider: recentCitiesProvider, weatherProvider: weatherProvider, iconProvider: iconProvider, locationService: locationService)
     }
     
     func testRecentCitiesLoadedOnceOnInit() {
-        viewModel = RecentLocationsViewModel(recentCitiesProvider: recentCitiesProvider, weatherProvider: weatherProvider, iconProvider: iconProvider)
+        viewModel = RecentLocationsViewModel(recentCitiesProvider: recentCitiesProvider, weatherProvider: weatherProvider, iconProvider: iconProvider, locationService: locationService)
         
         let exp = expectation(description: "loaded cities once")
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
@@ -41,7 +43,7 @@ class RecentLocationsViewModelTests: XCTestCase {
         let locations = [prepareLocation(), prepareLocation()]
         let exp = expectation(description: "inserted cells event registered")
         recentCitiesProvider.storedCities = locations
-        viewModel = RecentLocationsViewModel(recentCitiesProvider: recentCitiesProvider, weatherProvider: weatherProvider, iconProvider: iconProvider)
+        viewModel = RecentLocationsViewModel(recentCitiesProvider: recentCitiesProvider, weatherProvider: weatherProvider, iconProvider: iconProvider, locationService: locationService)
         
         viewModel.cellsToInsertObservable
             .subscribe(onNext: { indexes in
