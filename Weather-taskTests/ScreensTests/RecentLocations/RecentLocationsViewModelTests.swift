@@ -20,6 +20,8 @@ class RecentLocationsViewModelTests: XCTestCase {
     var locationService: LocationServiceMock!
     var cityProvider: CityProviderMock!
     var disposeBag: DisposeBag!
+    var scheduler: TestScheduler!
+
     override func setUpWithError() throws {
         recentCitiesProvider = RecentlyViewedCitiesProviderMock()
         weatherProvider = WeatherAPIClientMock()
@@ -27,18 +29,9 @@ class RecentLocationsViewModelTests: XCTestCase {
         locationService = LocationServiceMock()
         cityProvider = CityProviderMock()
         disposeBag = DisposeBag()
+        scheduler = TestScheduler(initialClock: 0)
+
         viewModel = RecentLocationsViewModel(recentCitiesProvider: recentCitiesProvider, weatherProvider: weatherProvider, iconProvider: iconProvider, locationService: locationService, cityProvider: cityProvider)
-    }
-    
-    func testRecentCitiesLoadedOnceOnInit() {
-        viewModel = RecentLocationsViewModel(recentCitiesProvider: recentCitiesProvider, weatherProvider: weatherProvider, iconProvider: iconProvider, locationService: locationService, cityProvider: cityProvider)
-        
-        let exp = expectation(description: "loaded cities once")
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
-            exp.fulfill()
-        }
-        
-        wait(for: [exp], timeout: 0.15)
     }
     
     func testRecentCitiesLoadSendsInsertEvent() {
@@ -126,6 +119,65 @@ class RecentLocationsViewModelTests: XCTestCase {
                 break
             }
             }).disposed(by: disposeBag)
+        
+        wait(for: [exp], timeout: 0.1)
+    }
+    
+    func testLocationServiceIsCalledWhenAddedUserLocation() {
+        
+        viewModel.addedUserLocation()
+        
+        XCTAssertEqual(locationService.getLocationCalledTimes, 1)
+    }
+    
+    func testWeatherIsLoadedWhenCoordinatesAdded() {
+        let weatherProviderCalledTimes = weatherProvider.currentWeatherLoadedtimes
+        viewModel.addedCoordinates(latitude: 0, longitude: 0)
+        
+        XCTAssertEqual(weatherProvider.currentWeatherLoadedtimes, weatherProviderCalledTimes + 1)
+    }
+    
+    func testDetailsScreenIsShownWhenLocationAddedSuccessfully() {
+        let location = prepareLocation()
+        weatherProvider.currentWeatherToReturn = location
+        let exp = expectation(description: "event to open weather details received")
+        viewModel.nextScreenObservable
+            .subscribe(onNext: { nextScreen in
+                if case RecentLocationNextScreen.locationWeather(_) = nextScreen {
+                    exp.fulfill()
+                }
+            }).disposed(by: disposeBag)
+        
+        viewModel.addedCoordinates(latitude: 0, longitude: 0)
+        
+        wait(for: [exp], timeout: 0.1)
+    }
+    
+    func testSelectLocationScreenIsShownWhenAddLocationClicked() {
+        let exp = expectation(description: "event to location selection screen received")
+        viewModel.nextScreenObservable
+            .subscribe(onNext: { nextScreen in
+                if case RecentLocationNextScreen.selectLocation(_) = nextScreen {
+                    exp.fulfill()
+                }
+            }).disposed(by: disposeBag)
+        
+        viewModel.addLocationClicked()
+        
+        wait(for: [exp], timeout: 0.1)
+    }
+    
+    func testDetailsScreenShownWhenSelected() {
+        viewModel.locationModels = [prepareLocation()]
+        let exp = expectation(description: "event to open weather details received")
+        viewModel.nextScreenObservable
+            .subscribe(onNext: { nextScreen in
+                if case RecentLocationNextScreen.locationWeather(_) = nextScreen {
+                    exp.fulfill()
+                }
+            }).disposed(by: disposeBag)
+        
+        viewModel.didSelectLocation(at: 0)
         
         wait(for: [exp], timeout: 0.1)
     }

@@ -17,6 +17,7 @@
 		DF294DC824F027B1008200C2 /* SelectLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF294DC724F027B1008200C2 /* SelectLocationViewController.swift */; };
 		DF294DCD24F02800008200C2 /* SelectLocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF294DCC24F02800008200C2 /* SelectLocationViewModel.swift */; };
 		DF294DD024F02821008200C2 /* CityProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF294DCF24F02821008200C2 /* CityProvider.swift */; };
+		DF2BC64D24F70A2D002F1E41 /* RxTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF2BC64C24F70A2D002F1E41 /* RxTest.framework */; };
 		DF2D573D24F16FB900C4CFC3 /* CityDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2D573C24F16FB900C4CFC3 /* CityDataSource.swift */; };
 		DF2D574224F27E1600C4CFC3 /* FileCityProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2D574124F27E1600C4CFC3 /* FileCityProvider.swift */; };
 		DF2D574424F27E4400C4CFC3 /* CityDataSourceImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF2D574324F27E4400C4CFC3 /* CityDataSourceImpl.swift */; };
@@ -114,6 +115,7 @@
 		DF294DC724F027B1008200C2 /* SelectLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectLocationViewController.swift; sourceTree = "<group>"; };
 		DF294DCC24F02800008200C2 /* SelectLocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectLocationViewModel.swift; sourceTree = "<group>"; };
 		DF294DCF24F02821008200C2 /* CityProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityProvider.swift; sourceTree = "<group>"; };
+		DF2BC64C24F70A2D002F1E41 /* RxTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxTest.framework; path = Carthage/Build/iOS/RxTest.framework; sourceTree = "<group>"; };
 		DF2D573C24F16FB900C4CFC3 /* CityDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityDataSource.swift; sourceTree = "<group>"; };
 		DF2D574124F27E1600C4CFC3 /* FileCityProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileCityProvider.swift; sourceTree = "<group>"; };
 		DF2D574324F27E4400C4CFC3 /* CityDataSourceImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityDataSourceImpl.swift; sourceTree = "<group>"; };
@@ -201,6 +203,7 @@
 			files = (
 				DFF6D6EE24F512D5008785B9 /* RxSwift.framework in Frameworks */,
 				DFF6D6EF24F512D8008785B9 /* RxCocoa.framework in Frameworks */,
+				DF2BC64D24F70A2D002F1E41 /* RxTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,6 +344,7 @@
 		DF2D574924F295CD00C4CFC3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DF2BC64C24F70A2D002F1E41 /* RxTest.framework */,
 				DF2D574B24F295CD00C4CFC3 /* RxCocoa.framework */,
 				DF2D574C24F295CD00C4CFC3 /* RxSwift.framework */,
 				DF2D574A24F295CD00C4CFC3 /* SnapKit.framework */,
@@ -547,6 +551,7 @@
 				DF294DAD24F021A0008200C2 /* Sources */,
 				DF294DAE24F021A0008200C2 /* Frameworks */,
 				DF294DAF24F021A0008200C2 /* Resources */,
+				DF2BC64E24F70ABA002F1E41 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -619,6 +624,26 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		DF2BC64E24F70ABA002F1E41 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/RxTest.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/RxCocoa.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/RxSwift.framework",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n/usr/local/bin/carthage copy-frameworks\n";
+		};
 		DF2D575424F295E500C4CFC3 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

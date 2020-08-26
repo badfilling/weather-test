@@ -81,7 +81,7 @@ class RecentLocationsViewModel {
             let longitudeText = longitudeText,
             let latitude = Double(latitudeText.replacingOccurrences(of: ",", with: ".")),
             let longitude = Double(longitudeText.replacingOccurrences(of: ",", with: ".")) else {
-                errorMessageSubject.onNext("Incorrect coordinates provided")
+                errorMessageSubject.onNext(LocationError.incorrectData.localizedDescription)
                 return
         }
         addedCoordinates(latitude: latitude, longitude: longitude)

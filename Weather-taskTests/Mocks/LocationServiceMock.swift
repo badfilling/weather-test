@@ -10,8 +10,9 @@ import CoreLocation
 @testable import Weather_task
 
 class LocationServiceMock: LocationService {
+    var getLocationCalledTimes = 0
     func getUserLocation(completion: @escaping (Result<CLLocation, Error>) -> Void) {
-        
+        getLocationCalledTimes += 1
     }
     
     

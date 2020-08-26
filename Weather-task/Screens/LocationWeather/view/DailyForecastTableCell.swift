@@ -38,10 +38,6 @@ class DailyForecastTableCell: UITableViewCell, AnyTableCell {
     }()
     
     var onReuse: (() -> Void)?
-//    override init(frame: CGRect) {
-//        super.init(frame: frame)
-//        setupViews()
-//    }
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
