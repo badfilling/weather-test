@@ -54,4 +54,23 @@ class SelectLocationViewModel {
         let location = LocationWeatherData(uuid: UUID(), cityId: city.id, cityName: city.name, cityCoordinates: city.coordinates, countryCode: city.countryCode, currentWeather: nil)
         addLocationDelegate?.added(location: location)
     }
+    
+    func addUserCoordinatesClicked() {
+        addLocationDelegate?.addedUserLocation()
+    }
+    
+    func customCoordinatesProvided(latitudeText: String?, longitudeText: String?) -> Single<Any> {
+        return Single<Any>.create { [weak self] single in
+            if let latitudeText = latitudeText,
+                let longitudeText = longitudeText,
+                let latitude = Double(latitudeText.replacingOccurrences(of: ",", with: ".")),
+                let longitude = Double(longitudeText.replacingOccurrences(of: ",", with: ".")) {
+                self?.addLocationDelegate?.addedCoordinates(latitude: latitude, longitude: longitude)
+                single(.success(()))
+            } else {
+                single(.error(LocationError.incorrectData))
+            }
+            return Disposables.create()
+        }
+    }
 }

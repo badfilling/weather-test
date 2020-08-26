@@ -38,6 +38,7 @@ class SelectLocationViewController: UIViewController {
         title = "Add a city"
         view.backgroundColor = .white
         setupViews()
+        setupNavigationBar()
         //because of rxCocoa/uikit bug - delay binding rx data source a bit
         DispatchQueue.main.async {
             self.setupTableRx()
@@ -59,6 +60,34 @@ class SelectLocationViewController: UIViewController {
         }
         
         citiesTable.keyboardDismissMode = .onDrag
+    }
+    
+    func setupNavigationBar() {
+        let userLocationButton = UIBarButtonItem(image: UIImage(named: "userLocation"), style: .plain, target: self, action: #selector(addUserCoordinatesClicked))
+        let customLocationButton = UIBarButtonItem(image: UIImage(named: "customLocation"), style: .plain, target: self, action: #selector(addCustomCoordinatesClicked))
+        navigationItem.rightBarButtonItems = [userLocationButton, customLocationButton]
+    }
+    
+    @objc func addUserCoordinatesClicked() {
+        viewModel.addUserCoordinatesClicked()
+    }
+    
+    @objc func addCustomCoordinatesClicked() {
+        let alertVC = UIAlertController.createCoordinateInput { [weak self] (latitude, longitude) in
+            guard let `self` = self else { return }
+            self.viewModel.customCoordinatesProvided(latitudeText: latitude, longitudeText: longitude)
+                .subscribe { [weak self] event in
+                    switch event {
+                    case .error(let error):
+                        let alert = UIAlertController(title: "Getting weather at location", message: error.localizedDescription, preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                        self?.present(alert, animated: true, completion: nil)
+                    case .success(_):
+                        self?.navigationController?.popViewController(animated: true)
+                    }
+            }.disposed(by: self.disposeBag)
+        }
+        present(alertVC, animated: true)
     }
     
     func setupTableRx() {

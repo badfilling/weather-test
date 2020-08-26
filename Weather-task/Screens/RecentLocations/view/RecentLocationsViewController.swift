@@ -84,7 +84,7 @@ class RecentLocationsViewController: UIViewController {
     }
     
     func setupRxError() {
-        viewModel.dataLoadingError
+        viewModel.errorMessage
             .observeOn(MainScheduler.asyncInstance)
             .subscribe(onNext: { [weak self] error in
                 let alert = UIAlertController(title: "Weather loading error", message: error, preferredStyle: .alert)
@@ -109,7 +109,10 @@ class RecentLocationsViewController: UIViewController {
     }
     
     @objc func addCustomCoordinatesClicked() {
-        
+        let alertVC = UIAlertController.createCoordinateInput { [weak self] (latitude, longitude) in
+            self?.viewModel.customCoordinatesProvided(latitudeText: latitude, longitudeText: longitude)
+        }
+        present(alertVC, animated: true)
     }
     
     @objc func addLocationClicked() {
