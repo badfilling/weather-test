@@ -9,6 +9,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import CoreLocation
 
 class RecentLocationsViewController: UIViewController {
     let locationsTable: UITableView = {
@@ -37,9 +38,8 @@ class RecentLocationsViewController: UIViewController {
         setupViews()
         setupNavigationBar()
         setupRxError()
-        DispatchQueue.main.async {
-            self.setupTableRx()
-        }
+        setupRxNavigation()
+        setupTableRx()
     }
     
     func setupViews() {
@@ -54,21 +54,34 @@ class RecentLocationsViewController: UIViewController {
     }
     
     func setupTableRx() {
-        viewModel.cellsToInsertObservable
+        viewModel.cellsToUpdateObservable
             .observeOn(MainScheduler.asyncInstance)
-            .bind { [weak self] indexes in
-                if indexes.isEmpty { return }
-                
-                self?.locationsTable.insertRows(at: indexes, with: .automatic)
+            .bind { [weak self] update in
+                switch update {
+                case .delete(let indexes):
+                    self?.locationsTable.deleteRows(at: indexes, with: .fade)
+                case .reload(let indexes):
+                    self?.locationsTable.reloadRows(at: indexes, with: .automatic)
+                case .insert(let indexes):
+                    self?.locationsTable.insertRows(at: indexes, with: .automatic)
+                }
         }.disposed(by: disposeBag)
+    }
+    
+    func setupRxNavigation() {
+        viewModel
+            .nextScreenObservable
+            .subscribe(onNext: { [weak self] screenType in
+                var vc: UIViewController!
+                switch screenType {
+                case .locationWeather(let viewModel):
+                    vc = LocationWeatherViewController(viewModel: viewModel)
+                case .selectLocation(let viewModel):
+                    vc = SelectLocationViewController(viewModel: viewModel)
+                }
+                self?.show(vc, sender: self)
+            }).disposed(by: disposeBag)
         
-        viewModel.cellsToReloadObservable
-            .observeOn(MainScheduler.asyncInstance)
-            .bind { [weak self] indexes in
-                if indexes.isEmpty { return }
-                
-                self?.locationsTable.reloadRows(at: indexes, with: .automatic)
-        }.disposed(by: disposeBag)
     }
     
     func setupRxError() {
@@ -87,6 +100,17 @@ class RecentLocationsViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         let addLocationButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addLocationClicked))
         navigationItem.leftBarButtonItem = addLocationButton
+        let userLocationButton = UIBarButtonItem(image: UIImage(named: "userLocation"), style: .plain, target: self, action: #selector(addUserCoordinatesClicked))
+        let customLocationButton = UIBarButtonItem(image: UIImage(named: "customLocation"), style: .plain, target: self, action: #selector(addCustomCoordinatesClicked))
+        navigationItem.rightBarButtonItems = [userLocationButton, customLocationButton]
+    }
+    
+    @objc func addUserCoordinatesClicked() {
+        viewModel.addUserCoordinatesClicked()
+    }
+    
+    @objc func addCustomCoordinatesClicked() {
+        
     }
     
     @objc func addLocationClicked() {
@@ -111,15 +135,12 @@ extension RecentLocationsViewController: UITableViewDataSource, UITableViewDeleg
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let detailsVM = LocationWeatherViewModel(location: viewModel.locationModels[indexPath.row], weatherProvider: viewModel.weatherProvider, weatherIconProvider: viewModel.iconProvider, dateManager: ForecastDateManager())
-        let detailsVC = LocationWeatherViewController(viewModel: detailsVM)
+        viewModel.didSelectLocation(at: indexPath.row)
         tableView.deselectRow(at: indexPath, animated: true)
-        show(detailsVC, sender: self)
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         guard editingStyle == .delete else { return }
         viewModel.deleteLocation(at: indexPath.row)
-        tableView.deleteRows(at: [indexPath], with: .fade)
     }
 }
