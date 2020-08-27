@@ -70,6 +70,7 @@ class SelectLocationViewController: UIViewController {
     
     @objc func addUserCoordinatesClicked() {
         viewModel.addUserCoordinatesClicked()
+        self.navigationController?.popViewController(animated: true)
     }
     
     @objc func addCustomCoordinatesClicked() {
